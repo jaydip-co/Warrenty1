@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    >
+    <com.google.android.material.appbar.AppBarLayout
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/back_button"
+                    android:src="@drawable/appbar_back_button"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </ImageView>
+               <TextView
+                   android:id="@+id/ISave"
+                   app:layout_constraintTop_toTopOf="parent"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintBottom_toBottomOf="parent"
+                   android:text="SAVE"
+                   android:textColor="#FFFFFF"
+                   android:layout_marginRight="8dp"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+    <ScrollView
+        app:layout_constraintTop_toBottomOf="@id/appbar"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+
+
+        <LinearLayout
+            android:layout_marginTop="30dp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <androidx.cardview.widget.CardView
+                app:cardCornerRadius="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:cardElevation="0dp">
+                <TextView
+                    android:visibility="visible"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/labelName"
+                    android:textSize="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_gravity="bottom"
+                    android:text="Item name"
+                    android:layout_width="wrap_content"
+                    android:elevation="0.1dp"
+                    android:layout_height="wrap_content"/>
+                <EditText
+                    android:id="@+id/IName"
+                    android:padding="5dp"
+                    android:textSize="20dp"
+                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+
+                    android:background="@drawable/category_border"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"/>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                app:cardElevation="0dp"
+                android:layout_width="match_parent"
+                app:cardCornerRadius="10dp"
+                android:layout_height="50dp">
+                <TextView
+                    android:text="Category"
+                    android:background="@color/label"
+                    android:elevation="0.1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <Spinner
+
+                    android:id="@+id/Icategory"
+                    android:background="@drawable/category_border"
+                    android:padding="5dp"
+
+                    android:gravity="bottom"
+                    android:minWidth="0dp"
+                    android:layout_gravity="bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:popupElevation="2dp"
+                    android:popupTheme="@style/Theme.AppCompat.DayNight.Dialog.Alert"/>
+                <ImageView
+                    android:layout_gravity="center|end"
+                    android:src="@drawable/drop_down"
+                    android:layout_marginRight="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0.0dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:background="@color/label"
+                    android:id="@+id/IDatelabel"
+                    android:text="Purchase Date"
+                    android:layout_marginLeft="10dp"
+                    android:elevation="0.1dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_gravity="bottom"
+                    android:id="@+id/Idate"
+                    android:textSize="20dp"
+                    android:gravity="bottom"
+                    android:paddingBottom="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/category_border"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="date"
+                    />
+                <ImageView
+                    android:id="@+id/dateSelect"
+                    android:src="@drawable/calender"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="10dp">
+
+                <TextView
+                    android:id="@+id/IMonthlabel"
+                    android:layout_gravity="bottom"
+                    android:textSize="20dp"
+                    android:elevation=".1dp"
+                    android:text="Duration In Month"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <EditText
+                    android:id="@+id/IMonth"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/category_border"
+                    android:inputType="numberDecimal"
+                    android:padding="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:textSize="20dp" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="10dp"
+                >
+                <TextView
+                    android:id="@+id/Idetaillabel"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="6dp"
+                    android:textSize="20dp"
+                    android:text="Detail"
+                    android:elevation="0.1dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <EditText
+                    android:id="@+id/IDetail"
+                    android:textSize="20dp"
+                    android:padding="5dp"
+
+                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:background="@drawable/category_border"
+                    android:layout_gravity="bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"/>
+            </androidx.cardview.widget.CardView>
+
+
+
+
+
+        </LinearLayout>
+        <TextView
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:text="Images"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="190dp"
+                android:layout_height="230dp"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="10dp"
+
+                android:elevation="0dp"
+                >
+                <LinearLayout
+                    android:background="@drawable/image_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+                <ImageView
+                    android:id="@+id/IImage"
+                    android:elevation="1dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="top|center_horizontal"
+                    android:src="@drawable/ic_baseline_camera_alt_24" />
+                <Button
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/AttachImage"
+                    android:background="@drawable/shape_button"
+                    android:text="Attach Image"
+                    android:layout_width="170dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_height="wrap_content"
+                    />
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="180dp"
+                android:layout_height="230dp"
+                android:layout_margin="5dp"
+                app:cardCornerRadius="10dp"
+                android:elevation="0dp"
+                >
+                <LinearLayout
+                    android:background="@drawable/image_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+                <ImageView
+                    android:id="@+id/IBill"
+                    android:elevation="1dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_baseline_receipt_24"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center|top"
+                    />
+                <Button
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/AttachBill"
+                    android:background="@drawable/shape_button"
+                    android:text="Attach Bill"
+                    android:layout_width="170dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    />
+            </androidx.cardview.widget.CardView>
+            <TextView
+                android:layout_marginTop="20dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    </ScrollView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
