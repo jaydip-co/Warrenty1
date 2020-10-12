@@ -30,4 +30,20 @@ public class PathProvider {
         mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);
         return mediaFile;
     }
+    public static File getnewPdf(Context context){
+        File mediaDirectory = new File(context.getFilesDir(),"/pdfs");
+
+        if(!mediaDirectory.exists()){
+            if(!mediaDirectory.mkdirs()){
+                return  null;
+            }
+        }
+
+        String timestamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
+        String fileName = "pdf_"+timestamp+".pdf";
+        File newFile = new File(mediaDirectory.getPath()+File.separator+fileName);
+        return newFile;
+
+
+    }
 }

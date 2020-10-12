@@ -18,7 +18,8 @@ public class ItemModel implements Serializable {
     private byte[] ItemImage;
     private byte[] billImage;
     private String ItemImageUri;
-    private String billImageUri;
+    private String billUri;
+    private boolean isBillPdf;
 
     public String getIname() {
         return Iname;
@@ -100,11 +101,19 @@ public class ItemModel implements Serializable {
         ItemImageUri = itemImageUri;
     }
 
-    public String getBillImageUri() {
-        return billImageUri;
+    public String getBillUri() {
+        return billUri;
     }
 
-    public void setBillImageUri(String billImageUri) {
-        this.billImageUri = billImageUri;
+    public void setBillUri(String billUri) {
+        this.billUri = billUri;
+    }
+
+    public boolean isBillPdf() {
+        return isBillPdf;
+    }
+
+    public void setBillPdf(boolean billPdf) {
+        isBillPdf = billPdf;
     }
 }

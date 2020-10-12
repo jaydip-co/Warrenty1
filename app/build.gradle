@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.jaydip.warrenty"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -49,5 +49,18 @@ dependencies {
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.archLifecycleVersion"
 
     implementation 'com.nambimobile.widgets:expandable-fab:1.0.1'
+
+
+    ///to get pdf full path
+    implementation 'com.github.HBiSoft:PickiT:0.1.14'
+
+///for pdf viewer
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+
+
+
+
+
+    implementation 'com.github.barteksc:pdfium-android:1.4.0'
 
 }

@@ -75,13 +75,17 @@ public class ItemActivity extends FragmentActivity implements DeleteItem , Activ
        ItemView.setAdapter(Iaddapter);
        categoryModel = new CategoryViewModel(getApplication());
        addItem = findViewById(R.id.addItem);
+
        ///////////////////////////////////////////////////////
 
 
 
         itemViewModel.getCategoryWise(currentCategory).observe(this, new Observer<List<ItemModel>>() {
+
+            int lastsize = 0;
             @Override
             public void onChanged(List<ItemModel> itemModels) {
+
                 Iaddapter.setList(itemModels);
             }
         });
@@ -135,11 +139,18 @@ public class ItemActivity extends FragmentActivity implements DeleteItem , Activ
                         count--;
                         currentCategotryModel.setTotalItem(count);
                         categoryModel.update(currentCategotryModel);
+
                     }
                 })
                 .setNegativeButton("cancel",null);
         builder.show();
     }
+
+    void refresh(){
+        Iaddapter = new itemAddapter(getApplicationContext(),this,this);
+        ItemView.setAdapter(Iaddapter);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -152,6 +163,13 @@ public class ItemActivity extends FragmentActivity implements DeleteItem , Activ
         Intent intent = new Intent(getApplicationContext(), EditItem.class);
         intent.putExtra("item",model);
         startActivityForResult(intent,CODEFOREDIT);
+    }
+
+    @Override
+    public void startshowActivity(ItemModel model) {
+        Intent intent = new Intent(this,ViewFileActivity.class);
+        intent.putExtra("item",model);
+        startActivity(intent);
     }
 
     @Override

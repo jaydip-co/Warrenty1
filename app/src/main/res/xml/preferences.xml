@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <SwitchPreference android:defaultValue="false"
         android:title="Notification"
+        app:iconSpaceReserved="false"
 
         android:key="notification_switch"
         android:summary="get notification when expire date is near"/>
 
-
+    <Preference
+        android:summary="tap to select time"
+        app:iconSpaceReserved="false"
+        android:key="time"
+        android:title="8:30"/>
 </PreferenceScreen>

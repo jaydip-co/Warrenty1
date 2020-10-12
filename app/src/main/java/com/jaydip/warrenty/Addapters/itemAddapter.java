@@ -26,6 +26,7 @@ import com.jaydip.warrenty.Listeners.DeleteItem;
 import com.jaydip.warrenty.Models.ItemModel;
 import com.jaydip.warrenty.R;
 
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,6 +66,7 @@ public class itemAddapter extends RecyclerView.Adapter<itemAddapter.itemHolder> 
             if(imageInbite != null){
                 Bitmap image = BitmapFactory.decodeByteArray(imageInbite,0,imageInbite.length);
                 holder.itemImage.setImageBitmap(image);
+                Log.e("item",single.getItemImageUri());
                 holder.itemImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -136,6 +138,12 @@ public class itemAddapter extends RecyclerView.Adapter<itemAddapter.itemHolder> 
                     listener.deleteItem(single);
                 }
                  });
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener2.startshowActivity(single);
+                    }
+                });
 
 
         }
@@ -151,6 +159,7 @@ public class itemAddapter extends RecyclerView.Adapter<itemAddapter.itemHolder> 
     public void setList(List<ItemModel> models){
         this.list = models;
         notifyDataSetChanged();
+
     }
 
     class itemHolder extends RecyclerView.ViewHolder{

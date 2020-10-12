@@ -9,4 +9,5 @@
     <color name="label">#ffffff</color>
 
     <color name="black_overlay">#66000000</color>
+    <color name="show_property">@color/colorPrimary</color>
 </resources>

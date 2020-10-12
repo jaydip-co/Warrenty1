@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 
 import android.app.DatePickerDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -21,6 +22,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,28 +30,36 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.hbisoft.pickit.PickiT;
+import com.hbisoft.pickit.PickiTCallbacks;
 import com.jaydip.warrenty.Listeners.OnReceieCategory;
 import com.jaydip.warrenty.Models.CategoryModel;
 import com.jaydip.warrenty.Models.ItemModel;
 import com.jaydip.warrenty.ViewModels.CategoryViewModel;
 import com.jaydip.warrenty.ViewModels.ItemViewModel;
+import com.shockwave.pdfium.PdfDocument;
+import com.shockwave.pdfium.PdfiumCore;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -59,9 +69,10 @@ import java.util.List;
 import static com.jaydip.warrenty.PathProvider.getOutputMediaFile;
 
 
-public class AddItem extends AppCompatActivity  {
+
+public class AddItem extends AppCompatActivity implements PickiTCallbacks {
     EditText Iname,Imonth,Idetail;
-    TextView Idate,Isave,Inamelabel,Imonthlabel,Idetaillabel;
+    TextView Idate,Isave,Inamelabel,Imonthlabel,Idetaillabel,pdfName;
     Button AttachImage,AttachBill;
     Spinner Icategory;
     ItemViewModel itemViewModel;
@@ -71,10 +82,16 @@ public class AddItem extends AppCompatActivity  {
     Bitmap IImageBitmap,IBillBitmap,scaledImage,scaledBill;
     ByteArrayOutputStream stream ;
     CategoryViewModel categoryViewModel;
-    String currentCategory;
+    String currentCategory,pdfPath,currentBillUri,currentImageUri,currentpdfpath;
     int day,Month,Year,eMonth,eYear;
     ItemModel model;
     CategoryModel currentCategoryModel;
+    public static int CODE_FOR_PDF = 205;
+    PickiT picKit;
+    LinearLayout pdfLayout;
+    boolean isbillPdf,isBillset;
+
+
 
 
     @Override
@@ -100,10 +117,18 @@ public class AddItem extends AppCompatActivity  {
         IImage = findViewById(R.id.IImage);
         IBill = findViewById(R.id.IBill);
         backbutton = findViewById(R.id.back_button);
+
         itemViewModel = new ItemViewModel(getApplication());
         categoryViewModel = new CategoryViewModel(getApplication());
         Intent intent = getIntent();
         Animation labelUp,labelDown;
+        picKit = new PickiT(this,this,this);
+
+        isBillset = false;
+//        currentCategory = intent.getStringExtra(ItemActivity.KEY_FOR_CATEGORY);
+//        if(currentCategory == null){
+//            currentCategory = "Electronics";
+//        }
 
         /////////////////////////////////////////////////////////
 
@@ -176,6 +201,7 @@ public class AddItem extends AppCompatActivity  {
 
                 Icategory.setAdapter(adapter);
                 currentCategory = intent.getStringExtra(ItemActivity.KEY_FOR_CATEGORY);
+
                 if(currentCategory != null){
                     if(currentCategory.length() > 0 ){
                         int index = strings.indexOf(currentCategory);
@@ -183,6 +209,8 @@ public class AddItem extends AppCompatActivity  {
                         Icategory.setEnabled(false);
                     }
                 }
+
+
 
 
 
@@ -217,8 +245,11 @@ public class AddItem extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
+
                 intent.setType("image/*");
+                String[] mimetype = {"image/*","application/pdf"};
                 intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.putExtra(Intent.EXTRA_MIME_TYPES,mimetype);
                 startActivityForResult(intent,REQUEST_CODE_Bill);
             }
         });
@@ -262,6 +293,7 @@ public class AddItem extends AppCompatActivity  {
         };
         Iname.addTextChangedListener(watcher);
         Imonth.addTextChangedListener(watcher);
+
 
 
     }
@@ -328,7 +360,7 @@ public class AddItem extends AppCompatActivity  {
             model.setCategory(currentCategory);
             model.setPurchaseDate(Idate.getText().toString());
             model.setDetail(Idetail.getText().toString());
-            model.setDurationMonth(12);
+            model.setDurationMonth(Integer.parseInt(Imonth.getText().toString()));
             String date = Idate.getText().toString();
             SimpleDateFormat formate = new SimpleDateFormat("dd/MM/yyyy");
             try {
@@ -347,28 +379,37 @@ public class AddItem extends AppCompatActivity  {
             if (IImageBitmap != null) {
                 stream = new ByteArrayOutputStream();
                 File file = PathProvider.getOutputMediaFile(this,true);
-                FileOutputStream Fstream = new FileOutputStream(file);
+//                FileOutputStream Fstream = new FileOutputStream(file);
                 scaledImage = getSacalabel(IImageBitmap);
-                IImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, Fstream);
-                Fstream.close();
+                Utils.copyPdf(getApplicationContext(),currentImageUri,file.getPath());
+//                IImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, Fstream);
+//                Fstream.close();
                 scaledImage.compress(Bitmap.CompressFormat.JPEG,100,stream);
                 byte[] image = stream.toByteArray();
                 model.setItemImage(image);
                 model.setItemImageUri(file.getPath());
             }
-            if (IBillBitmap != null) {
-                stream = new ByteArrayOutputStream();
-                File file = PathProvider.getOutputMediaFile(this,false);
-                FileOutputStream fstream = new FileOutputStream(file);
-                scaledBill = getSacalabel(IBillBitmap);
-                IBillBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fstream);
-                fstream.close();
-                scaledBill.compress(Bitmap.CompressFormat.JPEG,100,stream);
-                byte[] image = stream.toByteArray();
-                model.setBillImage(image);
-                model.setBillImageUri(file.getPath());
+            if(isBillset){
+                if(isbillPdf){
+                    File newpdf = PathProvider.getnewPdf(getApplicationContext());
+                    Utils.copyPdf(getApplicationContext(),currentBillUri,newpdf.getPath());
+                    model.setBillUri(newpdf.getPath());
+
+                }
+                else {
+                    File newimg = PathProvider.getOutputMediaFile(getApplicationContext(),false);
+                    Utils.copyPdf(getApplicationContext(),currentBillUri,newimg.getPath());
+                    Bitmap scaled = getSacalabel(IBillBitmap);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    scaled.compress(Bitmap.CompressFormat.JPEG,100,stream);
+                    model.setBillImage(stream.toByteArray());
+                    model.setBillUri(newimg.getPath());
+                }
+                model.setBillPdf(isbillPdf);
             }
-            itemViewModel.addItem(model);
+         itemViewModel.addItem(model);
+
+
 
             Log.e("jaydip", "added");
             Toast.makeText(this, Iname.getText().toString() + " added ", Toast.LENGTH_SHORT).show();
@@ -386,6 +427,7 @@ public class AddItem extends AppCompatActivity  {
     }
 
 
+
     public void calculateExpireDate(){
         int WarrentInMonth = Integer.parseInt(Imonth.getText().toString());
         Month = Month + WarrentInMonth;
@@ -397,6 +439,7 @@ public class AddItem extends AppCompatActivity  {
         Log.e("expire",day+"/"+Month+"/"+Year);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -404,17 +447,9 @@ public class AddItem extends AppCompatActivity  {
             Uri filepath = data.getData();
             try {
                 IImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),filepath);
-//                int ratio =(int) (IImageBitmap.getHeight() *(512.0 / IImageBitmap.getWidth()));
-//                Bitmap scaled = Bitmap.createScaledBitmap(IImageBitmap,512,ratio,true);
-//
-//                Log.e("jaydip",scaled.getByteCount()+"     "+IImageBitmap.getByteCount()+"    ");
-//
-//                File pic = getOutputMediaFile();
-//                FileOutputStream stream = new FileOutputStream(pic);
-//                String s = pic.getPath();
-//                IImageBitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
-//                Log.e("jaydip",Environment.getDataDirectory().getAbsolutePath());
-//                stream.close();
+                currentImageUri = Utils.storeToTemp(getApplicationContext(),IImageBitmap,true);
+                setIntent();
+
                 IImage.setImageBitmap(IImageBitmap);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -425,18 +460,152 @@ public class AddItem extends AppCompatActivity  {
         if(requestCode == REQUEST_CODE_Bill && resultCode == RESULT_OK && data.getData() != null){
             Uri filepath = data.getData();
             try {
-                IBillBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),filepath);
-                IBill.setImageBitmap(IBillBitmap);
+                isBillset = true;
+                ContentResolver resolver = getContentResolver();
+                MimeTypeMap map = MimeTypeMap.getSingleton();
+                String type = map.getExtensionFromMimeType(resolver.getType(filepath));
+                Log.e("bill",type);
+                setBill(filepath,type);
+//
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
 
         }
+        if(requestCode == CODE_FOR_PDF && resultCode == RESULT_OK && data.getData() != null){
+            Uri path = data.getData();
+            picKit.getPath(path,Build.VERSION.SDK_INT);
+
+
+
+
+        }
+    }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    void setBill(Uri uri, String type){
+        try {
+            if (type.equals("jpg") || type.equals("jpeg") || type.equals("png")) {
+                currentpdfpath = null;
+                IBillBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                currentBillUri = Utils.storeToTemp(getApplicationContext(), IBillBitmap, false);
+                isbillPdf = false;
+                setIntent();
+                IBill.setImageBitmap(IBillBitmap);
+            }
+            else if(type.equals("pdf")){
+                IBillBitmap = null;
+                isbillPdf = true;
+                picKit.getPath(uri,Build.VERSION.SDK_INT);
+                IBill.setImageDrawable(getDrawable(R.drawable.pdf));
+            }
+//            setIntent();
+        }
+        catch (Exception e){
+            Log.e("bill",e.toString());
+        }
+
+    }
+    public void removeIntent(){
+    }
+    public void setIntent(){
+
+        if(IImageBitmap != null){
+
+            AttachImage.setText("Change Image of Item");
+            IImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(),ImageActivity.class);
+                    intent.putExtra("image",currentImageUri);
+                    startActivity(intent);
+
+                }
+            });
+        }
+        if(currentBillUri != null){
+            AttachBill.setText("change Bill");
+            if(isbillPdf){
+                IBill.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), pdfViewActivity.class);
+                        intent.putExtra(pdfViewActivity.PDF_URI, currentBillUri);
+                        startActivity(intent);
+                    }
+                });
+
+            }
+            else {
+                IBill.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(),ImageActivity.class);
+                        intent.putExtra("image",currentBillUri);
+                        startActivity(intent);
+                    }
+                });
+
+            }
+        }
+
+
     }
 
 
 
+    @Override
+    public void PickiTonUriReturned() {
 
+    }
 
+    @Override
+    public void PickiTonStartListener() {
+
+    }
+
+    @Override
+    public void PickiTonProgressUpdate(int progress) {
+
+    }
+
+    @Override
+    public void PickiTonCompleteListener(String path, boolean wasDriveFile, boolean wasUnknownProvider, boolean wasSuccessful, String Reason) {
+        Log.e("pdf",path);
+        currentBillUri = path;
+//        Bitmap imageForBill = getPdfThump(path);
+//        IBill.setImageBitmap(imageForBill);
+
+//        File file = new File(path);
+//        Log.e("pdf",file.getName());
+//
+//        pdfName.setText(file.getName());
+        setIntent();
+    }
+
+    Bitmap getPdfThump(String uriString){
+        Uri uri = Uri.parse(uriString);
+        Bitmap bmp = null;
+        int pageNumber = 0;
+        PdfiumCore pdfiumCore = new PdfiumCore(this);
+        try {
+            //http://www.programcreek.com/java-api-examples/index.php?api=android.os.ParcelFileDescriptor
+//            ParcelFileDescriptor fd = getContentResolver().openFileDescriptor(uri, "r");
+//            PdfDocument pdfDocument = pdfiumCore.newDocument(fd);
+//            pdfiumCore.openPage(pdfDocument, pageNumber);
+//            int width = pdfiumCore.getPageWidthPoint(pdfDocument, pageNumber);
+//            int height = pdfiumCore.getPageHeightPoint(pdfDocument, pageNumber);
+//            bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+//            pdfiumCore.renderPageBitmap(pdfDocument, bmp, pageNumber, 0, 0, width, height);
+//            pdfiumCore.closeDocument(pdfDocument); // important!
+            InputStream stream = new FileInputStream(uriString);
+            byte[] buff = new byte[1024];
+            int length = stream.read(buff);
+            bmp = BitmapFactory.decodeByteArray(buff,0,buff.length);
+
+        } catch(Exception e) {
+            Log.e("tag",e.toString());
+        }
+        return  bmp;
+    }
 }

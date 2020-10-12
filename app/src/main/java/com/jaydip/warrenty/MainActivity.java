@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
+import com.shockwave.pdfium.PdfiumCore;
+
 public class MainActivity extends FragmentActivity {
     FrameLayout container;
     EditText loginPass;
