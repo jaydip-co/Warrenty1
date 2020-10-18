@@ -17,7 +17,7 @@ import com.jaydip.warrenty.Models.ItemModel;
 
 public class ViewFileActivity extends AppCompatActivity {
     ItemModel item;
-    ImageView editButton,backButton,IImage,IBill,ItemImage;
+    ImageView editButton,RecieptButton,backButton,IImage,IBill,ItemImage;
     TextView Iname,Icategory,purchasedate,expireDate,IMonth,IDetail,detailseperator,detailLable;
     CardView ItemCard,BillCard;
 
@@ -41,7 +41,8 @@ public class ViewFileActivity extends AppCompatActivity {
         IBill = findViewById(R.id.IBill);
         ItemCard = findViewById(R.id.ItemCard);
         BillCard = findViewById(R.id.BillCard);
-        ItemImage = findViewById(R.id.item_Image);
+        ItemImage = findViewById(R.id.Item_image);
+        RecieptButton = findViewById(R.id.recieptButton);
 
 
 
@@ -86,7 +87,7 @@ public class ViewFileActivity extends AppCompatActivity {
             Bitmap ImageBit = BitmapFactory.decodeByteArray(item.getItemImage(),0,item.getItemImage().length);
             IImage.setImageBitmap(ImageBit);
             ItemImage.setImageBitmap(ImageBit);
-            IImage.setOnClickListener(new View.OnClickListener() {
+            ItemImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(),ImageActivity.class);
@@ -97,17 +98,38 @@ public class ViewFileActivity extends AppCompatActivity {
         }
         if(item.getBillImage() != null){
 //            BillCard.setVisibility(View.VISIBLE);
-            Bitmap ImageBit = BitmapFactory.decodeByteArray(item.getBillImage(),0,item.getBillImage().length);
-            IBill.setImageBitmap(ImageBit);
-            IBill.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(),ImageActivity.class);
-                    intent.putExtra("image",item.getBillUri());
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
-            });
+//            Bitmap ImageBit = BitmapFactory.decodeByteArray(item.getBillImage(),0,item.getBillImage().length);
+//            IBill.setImageBitmap(ImageBit);
+//            IBill.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(getApplicationContext(),ImageActivity.class);
+//                    intent.putExtra("image",item.getBillUri());
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    startActivity(intent);
+//                }
+//            });
+            if(item.isBillPdf()){
+                RecieptButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(),pdfViewActivity.class);
+                        intent.putExtra(pdfViewActivity.PDF_URI,item.getBillUri());
+                    }
+                });
+
+            }
+            else {
+                RecieptButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), ImageActivity.class);
+                        intent.putExtra("image", item.getBillUri());
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                });
+            }
 
         }
 
