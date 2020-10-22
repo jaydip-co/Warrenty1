@@ -55,6 +55,7 @@ public class ViewFileActivity extends AppCompatActivity {
                 intent1.putExtra("item",item);
                 intent1.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent1);
+                finish();
             }
         });
 
@@ -127,6 +128,7 @@ public class ViewFileActivity extends AppCompatActivity {
                         intent.putExtra("image", item.getBillUri());
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
+                        finish();
                     }
                 });
             }
