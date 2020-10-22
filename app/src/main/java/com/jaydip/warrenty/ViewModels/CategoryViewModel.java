@@ -2,16 +2,16 @@ package com.jaydip.warrenty.ViewModels;
 
 import android.app.Application;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-
 import com.jaydip.warrenty.Daos.CategoryDao;
 import com.jaydip.warrenty.Listeners.OnReceieCategory;
 import com.jaydip.warrenty.Models.CategoryModel;
 import com.jaydip.warrenty.databases.WarrentyDatabase;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 public class CategoryViewModel extends AndroidViewModel {
     private WarrentyDatabase mdatabase;

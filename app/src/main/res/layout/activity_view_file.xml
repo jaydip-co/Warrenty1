@@ -251,6 +251,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appbar" >
         <ImageView
+            android:paddingBottom="2dp"
             android:id="@+id/Item_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -297,12 +298,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Iname"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Last updated On:-"
+            android:text="Last updated On:- "
             android:textSize="10dp" />
         <TextView
             android:textSize="10dp"
@@ -316,6 +318,7 @@
         android:background="#EEEEEE"
         android:showDividers="middle"
         android:elevation="2dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/linear_for_updatedate"
         android:id="@+id/detailLayout"
         android:layout_width="match_parent"

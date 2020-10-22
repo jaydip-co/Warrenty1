@@ -13,7 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ViewFileActivity"
-            ></activity>
+            android:configChanges="screenSize|keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            >
+
+        </activity>
         <activity android:name=".pdfViewActivity" />
         <activity
             android:name=".SettingsActivity"
@@ -36,8 +40,8 @@
         <activity
             android:name=".ItemActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
-            android:parentActivityName=".HomeActivity"
             android:screenOrientation="portrait"
+            android:parentActivityName=".HomeActivity"
             android:theme="@style/ItemTheme" />
         <activity
             android:name=".HomeActivity"
