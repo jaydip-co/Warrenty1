@@ -78,6 +78,14 @@ public class CategoryViewModel extends AndroidViewModel {
             mdao.updateCategory(categoryModel);
         });
     }
+    public void deleteCat(CategoryModel model){
+        WarrentyDatabase.writeExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mdao.deleteCat(model);
+            }
+        });
+    }
 
 
 }

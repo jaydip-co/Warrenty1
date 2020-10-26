@@ -1,14 +1,15 @@
 package com.jaydip.warrenty.Daos;
 
-import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.Query;
-import androidx.room.Update;
-
 import com.jaydip.warrenty.Models.CategoryModel;
 
 import java.util.List;
+
+import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
 
 @Dao
 public interface CategoryDao  {
@@ -22,5 +23,6 @@ public interface CategoryDao  {
     public CategoryModel getCategory(String category);
     @Update
     void updateCategory(CategoryModel model);
-
+    @Delete
+    void deleteCat(CategoryModel model);
 }

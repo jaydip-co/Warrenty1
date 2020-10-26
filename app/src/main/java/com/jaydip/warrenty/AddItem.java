@@ -344,6 +344,9 @@ public class AddItem extends AppCompatActivity implements PickiTCallbacks {
             model.setPurchaseDate(Idate.getText().toString());
             model.setDetail(Idetail.getText().toString());
             model.setDurationMonth(Integer.parseInt(Imonth.getText().toString()));
+            Calendar calendarNow= Calendar.getInstance();
+            String updateDate = calendarNow.get(Calendar.DAY_OF_MONTH)+"/"+(calendarNow.get(Calendar.MONTH)+1)+"/"+calendarNow.get(Calendar.YEAR);
+            model.setLastUpdateDate(updateDate);
             String date = Idate.getText().toString();
             SimpleDateFormat formate = new SimpleDateFormat("dd/MM/yyyy");
             try {
@@ -559,8 +562,8 @@ public class AddItem extends AppCompatActivity implements PickiTCallbacks {
 //        Bitmap imageForBill = getPdfThump(path);
 //        IBill.setImageBitmap(imageForBill);
 
-//        File file = new File(path);
-//        Log.e("pdf",file.getName());
+        File file = new File(path);
+        Log.e("pdf",file.getName());
 //
 //        pdfName.setText(file.getName());
         setIntent();

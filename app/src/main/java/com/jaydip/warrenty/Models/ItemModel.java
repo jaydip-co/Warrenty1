@@ -1,10 +1,9 @@
 package com.jaydip.warrenty.Models;
 
+import java.io.Serializable;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import java.io.Serializable;
-import java.sql.Date;
 @Entity(tableName = "Items")
 public class ItemModel implements Serializable {
     @PrimaryKey(autoGenerate = true)
@@ -20,6 +19,15 @@ public class ItemModel implements Serializable {
     private String ItemImageUri;
     private String billUri;
     private boolean isBillPdf;
+    private String lastUpdateDate;
+
+    public String getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    public void setLastUpdateDate(String lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
 
     public String getIname() {
         return Iname;

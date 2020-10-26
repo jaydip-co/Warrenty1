@@ -1,15 +1,15 @@
 package com.jaydip.warrenty.Daos;
 
+import com.jaydip.warrenty.Models.ItemModel;
+
+import java.util.List;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
-
-import com.jaydip.warrenty.Models.ItemModel;
-
-import java.util.List;
 
 @Dao
 public interface ItemDao {
@@ -29,4 +29,7 @@ public interface ItemDao {
 
     @Update
     public  void update(ItemModel model);
+
+    @Query("Delete FROM Items WHERE Category = :category")
+    void deleteWithCategory(String category);
 }

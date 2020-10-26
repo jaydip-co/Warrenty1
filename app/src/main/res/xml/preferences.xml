@@ -13,4 +13,9 @@
         app:iconSpaceReserved="false"
         android:key="time"
         android:title="8:30"/>
+    <SwitchPreference android:defaultValue="false"
+        android:title="Sync with Gmail"
+        android:summary="switch to sync with Gmail"
+        app:iconSpaceReserved="false"
+        android:key="Sync_switch"/>
 </PreferenceScreen>

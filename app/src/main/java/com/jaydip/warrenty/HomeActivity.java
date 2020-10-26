@@ -1,24 +1,11 @@
 package com.jaydip.warrenty;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
-import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,17 +22,28 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jaydip.warrenty.Addapters.CategoryAddapter;
 import com.jaydip.warrenty.Broadcast.NotificationRecieverer;
+import com.jaydip.warrenty.Listeners.DeleteCategory;
 import com.jaydip.warrenty.Models.CategoryModel;
 import com.jaydip.warrenty.ViewModels.CategoryViewModel;
+import com.jaydip.warrenty.ViewModels.ItemViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+public class HomeActivity extends AppCompatActivity implements DeleteCategory {
     CategoryAddapter Caddapter;
     List<CategoryModel> list;
     RecyclerView CategoryView;
     CategoryViewModel categoryViewModel;
+    ItemViewModel itemViewModel;
     FloatingActionButton fab,fab1,fab2;
     Animation fab_rotate,fab_back,fab_open,fab_close;
     TextView fab_text2,fab_text3;
@@ -67,6 +65,7 @@ public class HomeActivity extends AppCompatActivity {
         CategoryView = findViewById(R.id.category);
         CategoryView.setLayoutManager(new GridLayoutManager(this,2));
         categoryViewModel = new CategoryViewModel(getApplication());
+        itemViewModel = new ItemViewModel(getApplication());
         CategoryView.setAdapter(Caddapter);
         fab = findViewById(R.id.fab1);
         fab1 = findViewById(R.id.fab2);
@@ -170,8 +169,29 @@ public class HomeActivity extends AppCompatActivity {
             manager.createNotificationChannel(channel);
             Log.e("jaydip","channel created");
         }
+//        savetoZar();
     }
+@RequiresApi(api = Build.VERSION_CODES.N)
+void savetoZar(){
+//    Log.e("jaydip","started");
+//    File  file = new File(this.getFilesDir(),"/pdfs/pdf_23102020_1133.pdf");
+//    File newfile = new File(this.getFilesDir(),"/zip");
+//    Log.e("jaydip",this.getFilesDir()+"   filepath");
+//    Log.e("jaydip",this.getDataDir()+"   Datapath");
+//    File ddataFile = new File(this.getDataDir(),"/files/zipfile.zar");
+//    File[] filesList = ddataFile.listFiles();
+//    for (int i=0;i<filesList.length;i++){
+//        Log.e("jaydip",filesList[i].getName());
+//    }
 
+//    if(!newfile.exists()){
+//        newfile.mkdir();
+//    }
+//    if(file.exists()){
+//        Log.e("jaydip","started");
+//        PathProvider.compressToZar(file.getAbsolutePath(),newfile.getAbsolutePath()+"file.zip");
+//    }
+}
 
 
     ///// ad new category
@@ -252,5 +272,11 @@ public class HomeActivity extends AppCompatActivity {
             super.onBackPressed();
         }
 
+    }
+
+    @Override
+    public void DeleteCCategory(CategoryModel category) {
+        categoryViewModel.deleteCat(category);
+        itemViewModel.deleteAll(category.getCategoryName());
     }
 }

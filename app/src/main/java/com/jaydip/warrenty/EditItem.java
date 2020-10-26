@@ -1,15 +1,6 @@
 package com.jaydip.warrenty;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
-
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -38,7 +28,6 @@ import android.widget.TextView;
 
 import com.hbisoft.pickit.PickiT;
 import com.hbisoft.pickit.PickiTCallbacks;
-import com.jaydip.warrenty.Models.CategoryModel;
 import com.jaydip.warrenty.Models.ItemModel;
 import com.jaydip.warrenty.ViewModels.CategoryViewModel;
 import com.jaydip.warrenty.ViewModels.ItemViewModel;
@@ -47,12 +36,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
 
 public class EditItem extends AppCompatActivity implements PickiTCallbacks {
 
@@ -339,7 +333,9 @@ public class EditItem extends AppCompatActivity implements PickiTCallbacks {
             item.setPurchaseDate(Idate.getText().toString());
             item.setDurationMonth(Integer.parseInt(Imonth.getText().toString()));
             item.setDetail(Idetail.getText().toString());
-
+            Calendar calendar = Calendar.getInstance();
+            String updateDate = calendar.get(Calendar.DAY_OF_MONTH)+"/"+(calendar.get(Calendar.MONTH)+1)+"/"+calendar.get(Calendar.YEAR);
+            item.setLastUpdateDate(updateDate);
             if (ItemBitmap != null && isImageChanged) {
                 File file;
                 if(item.getItemImageUri() != null){
@@ -528,6 +524,7 @@ public class EditItem extends AppCompatActivity implements PickiTCallbacks {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.e("jaydip","reached at result");
         if(resultCode == RESULT_OK && data.getData() != null){
             if(requestCode == REQUEST_CODE_Image){
                 Uri path = data.getData();

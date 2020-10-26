@@ -1,24 +1,22 @@
 package com.jaydip.warrenty;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jaydip.warrenty.Models.ItemModel;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 public class ViewFileActivity extends AppCompatActivity {
     ItemModel item;
     ImageView editButton,RecieptButton,backButton,IImage,IBill,ItemImage;
-    TextView Iname,Icategory,purchasedate,expireDate,IMonth,IDetail,detailseperator,detailLable;
+    TextView Iname,Icategory,purchasedate,expireDate,IMonth,IDetail,detailseperator,detailLable,lastUpdateDate;
     CardView ItemCard,BillCard;
 
     @Override
@@ -43,6 +41,7 @@ public class ViewFileActivity extends AppCompatActivity {
         BillCard = findViewById(R.id.BillCard);
         ItemImage = findViewById(R.id.Item_image);
         RecieptButton = findViewById(R.id.recieptButton);
+        lastUpdateDate = findViewById(R.id.lastUpdateDate);
 
 
 
@@ -53,7 +52,6 @@ public class ViewFileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent1 = new Intent(getApplicationContext(),EditItem.class);
                 intent1.putExtra("item",item);
-                intent1.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent1);
                 finish();
             }
@@ -74,6 +72,9 @@ public class ViewFileActivity extends AppCompatActivity {
         purchasedate.setText(item.getPurchaseDate());
         expireDate.setText(item.getExpireDate());
         IMonth.setText(item.getDurationMonth()+"");
+        if(item.getLastUpdateDate() != null){
+            lastUpdateDate.setText(item.getLastUpdateDate());
+        }
         if(item.getDetail().length() == 0){
             detailLable.setVisibility(View.GONE);
             detailseperator.setVisibility(View.GONE);
@@ -136,4 +137,6 @@ public class ViewFileActivity extends AppCompatActivity {
         }
 
     }
+
+
 }

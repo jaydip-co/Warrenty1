@@ -13,27 +13,30 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.jaydip.warrenty.ItemActivity;
+import com.jaydip.warrenty.Listeners.DeleteCategory;
 import com.jaydip.warrenty.Models.CategoryModel;
 import com.jaydip.warrenty.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class CategoryAddapter extends RecyclerView.Adapter<CategoryAddapter.categoryHolder>{
     LayoutInflater inflater;
     Context context;
     List<CategoryModel> list;
+    DeleteCategory listener;
 
     public CategoryAddapter(Context context){
         inflater = LayoutInflater.from(context);
         this.context = context;
         list = new ArrayList<>();
+        listener = (DeleteCategory) context;
     }
 
     @NonNull
@@ -47,50 +50,53 @@ public class CategoryAddapter extends RecyclerView.Adapter<CategoryAddapter.cate
     @Override
     public void onBindViewHolder(@NonNull categoryHolder holder, final int position) {
 
-        if(list != null){
+        if(list != null) {
 
             CategoryModel single = list.get(position);
             holder.t1.setText(single.getCategoryName());
             String base = "@drawable/";
-            String uri = base+single.getIconName();
+            String uri = base + single.getIconName();
             holder.totalCount.setText(String.valueOf(single.getTotalItem()));
 
-            int imageResource = context.getResources().getIdentifier(uri,null,context.getPackageName());
+            int imageResource = context.getResources().getIdentifier(uri, null, context.getPackageName());
             Drawable d = context.getDrawable(imageResource);
             holder.icon.setImageDrawable(d);
 
+
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    Intent intent = new Intent(context, ItemActivity.class);
+                    intent.putExtra("title", list.get(position).getCategoryName());
+                    context.startActivity(intent);
+
+
+                }
+            });
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+
+                    Log.e("jaydip", "mode");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                            .setTitle("Are you Sure?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    listener.DeleteCCategory(single);
+
+                                }
+                            })
+                            .setNegativeButton("Cancel", null);
+                    builder.show();
+
+                    return true;
+                }
+            });
         }
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                   Intent intent = new Intent(context, ItemActivity.class);
-                   intent.putExtra("title",list.get(position).getCategoryName());
-                   context.startActivity(intent);
-
-
-            }
-        });
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
-                Log.e("jaydip","mode");
-                AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                        .setTitle("Are you Sure?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        })
-                        .setNegativeButton("Cancel",null);
-                builder.show();
-
-                return true;
-            }
-        });
 
     }
 

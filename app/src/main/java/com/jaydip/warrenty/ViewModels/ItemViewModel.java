@@ -1,18 +1,16 @@
 package com.jaydip.warrenty.ViewModels;
 
 import android.app.Application;
-import android.content.Context;
-import android.net.wifi.WifiManager;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
 import com.jaydip.warrenty.Daos.ItemDao;
 import com.jaydip.warrenty.Models.ItemModel;
 import com.jaydip.warrenty.databases.WarrentyDatabase;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 public class ItemViewModel extends AndroidViewModel {
     WarrentyDatabase mDatabase;
@@ -34,6 +32,15 @@ public class ItemViewModel extends AndroidViewModel {
     public LiveData<List<ItemModel>> getCategoryWise(String category){
         categoryWise = mdao.getCategoryWise(category);
         return categoryWise;
+    }
+    ///for deleting multiple
+    public void deleteAll(String category){
+        WarrentyDatabase.writeExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mdao.deleteWithCategory(category);
+            }
+        });
     }
 
     //for deleting items
