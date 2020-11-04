@@ -25,4 +25,6 @@ public interface CategoryDao  {
     void updateCategory(CategoryModel model);
     @Delete
     void deleteCat(CategoryModel model);
+    @Query("INSERT Or ignore into categories (categoryName,totalItem,iconName) values(:category,:totalItem,:iconName)")
+    void IgnoreIf(String category,int totalItem,String iconName);
 }

@@ -25,6 +25,7 @@ import com.jaydip.warrenty.Listeners.ActivityForResult;
 import com.jaydip.warrenty.Listeners.DeleteItem;
 import com.jaydip.warrenty.Models.ItemModel;
 import com.jaydip.warrenty.R;
+import com.jaydip.warrenty.pdfViewActivity;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -41,12 +42,12 @@ public class itemAddapter extends RecyclerView.Adapter<itemAddapter.itemHolder> 
     DeleteItem listener;
     Context context;
     ActivityForResult listener2;
-    public itemAddapter(Context context, DeleteItem listener,ActivityForResult listener2){
+    public itemAddapter(Context context){
         this.context = context;
         inflater = LayoutInflater.from(context);
         list = new ArrayList<>();
-        this.listener = listener;
-        this.listener2 = listener2;
+        this.listener = (DeleteItem) context;
+        this.listener2 = (ActivityForResult) context;
     }
     @NonNull
     @Override
@@ -70,9 +71,7 @@ public class itemAddapter extends RecyclerView.Adapter<itemAddapter.itemHolder> 
                 holder.itemImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(context, ImageActivity.class);
-                        intent.putExtra("image",single.getItemImageUri());
-                        context.startActivity(intent);
+                      listener2.startBillActivity(single.getItemImageUri(),false);
                     }
                 });
 
@@ -81,7 +80,6 @@ public class itemAddapter extends RecyclerView.Adapter<itemAddapter.itemHolder> 
                 holder.purchasedate.setText(single.getPurchaseDate());
 
                 String expire = single.getExpireDate();
-                Calendar Currentcalendar = Calendar.getInstance();
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                 Date expireDate = format.parse(expire);
                 Date currentdate = Calendar.getInstance().getTime();
@@ -144,6 +142,19 @@ public class itemAddapter extends RecyclerView.Adapter<itemAddapter.itemHolder> 
                         listener2.startshowActivity(single);
                     }
                 });
+                if(single.getBillUri() != null){
+                    holder.showBill.setVisibility(View.VISIBLE);
+                   holder.showBill.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View v) {
+                           listener2.startBillActivity(single.getBillUri(),single.isBillPdf());
+                       }
+                   });
+                }
+                else
+                {
+                    holder.showBill.setVisibility(View.GONE);
+                }
 
 
         }
@@ -164,7 +175,7 @@ public class itemAddapter extends RecyclerView.Adapter<itemAddapter.itemHolder> 
 
     class itemHolder extends RecyclerView.ViewHolder{
         TextView t,expireDate,daysLeft,purchasedate;
-        ImageView itemImage,delete,edit,LeftDays;
+        ImageView itemImage,delete,edit,LeftDays,showBill;
         public itemHolder(@NonNull View itemView) {
             super(itemView);
             t = itemView.findViewById(R.id.ItemNAme);
@@ -175,6 +186,7 @@ public class itemAddapter extends RecyclerView.Adapter<itemAddapter.itemHolder> 
             edit = itemView.findViewById(R.id.edit);
             purchasedate = itemView.findViewById(R.id.purchasedate);
             LeftDays = itemView.findViewById(R.id.leftDays);
+            showBill = itemView.findViewById(R.id.ViewBill);
         }
     }
 }

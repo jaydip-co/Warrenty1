@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.jaydip.warrenty.Addapters.ExpiredItemAddapter;
 import com.jaydip.warrenty.Addapters.itemAddapter;
 import com.jaydip.warrenty.Listeners.ActivityForResult;
 import com.jaydip.warrenty.Listeners.DeleteItem;
@@ -33,17 +34,21 @@ import com.jaydip.warrenty.Models.ItemModel;
 import com.jaydip.warrenty.ViewModels.CategoryViewModel;
 import com.jaydip.warrenty.ViewModels.ItemViewModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ItemActivity extends FragmentActivity implements DeleteItem , ActivityForResult , OnReceieCategory {
     List<ItemModel> items;
     itemAddapter Iaddapter;
-    RecyclerView ItemView;
+    RecyclerView ItemView,expired;
     ItemViewModel itemViewModel;
     String currentCategory;
     ImageView backButton;
-    TextView title;
+    TextView title,expiredTitle;
     Toolbar toolbar;
     CategoryViewModel categoryModel;
     CategoryModel currentCategotryModel;
@@ -69,12 +74,19 @@ public class ItemActivity extends FragmentActivity implements DeleteItem , Activ
         title.setText(currentCategory);
         items = new ArrayList<>();
        itemViewModel = new ItemViewModel(getApplication());
-       Iaddapter = new itemAddapter(this,this,this);
+       Iaddapter = new itemAddapter(this);
        ItemView = findViewById(R.id.OneCategory);
        ItemView.setLayoutManager(new LinearLayoutManager(this));
        ItemView.setAdapter(Iaddapter);
        categoryModel = new CategoryViewModel(getApplication());
        addItem = findViewById(R.id.addItem);
+       expired = findViewById(R.id.expiredRecycle);
+       expired.setLayoutManager(new LinearLayoutManager(this));
+        ExpiredItemAddapter expiredAddapter = new ExpiredItemAddapter(this);
+       expired.setAdapter(expiredAddapter);
+       expiredTitle = findViewById(R.id.expiredTitle);
+      expired.setScrollContainer(false);
+      ItemView.setScrollContainer(false);
 
        ///////////////////////////////////////////////////////
 
@@ -85,8 +97,39 @@ public class ItemActivity extends FragmentActivity implements DeleteItem , Activ
             int lastsize = 0;
             @Override
             public void onChanged(List<ItemModel> itemModels) {
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                List<ItemModel> continueItem = new ArrayList<>();
+                List<ItemModel> expiredItem = new ArrayList<>();
+                for (ItemModel i : itemModels){
+                    try {
+                    String expire = i.getExpireDate();
+                    Date expireDate = format.parse(expire);
+                    if(Calendar.getInstance().getTime().getTime() < expireDate.getTime()){
+                        continueItem.add(i);
+                    }
+                    else {
+                        expiredItem.add(i);
+                    }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
-                Iaddapter.setList(itemModels);
+                }
+
+
+                Iaddapter.setList(continueItem);
+                if(expiredItem.size() > 0){
+                    expiredTitle.setVisibility(View.VISIBLE);
+                    expiredAddapter.setItems(expiredItem);
+                }
+                else {
+                    expiredTitle.setVisibility(View.GONE);
+
+                }
+//                expiredTitle.setVisibility(View.VISIBLE);
+//                Iaddapter.setList(itemModels);
+//                expiredAddapter.setItems(itemModels);
+
             }
         });
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -146,10 +189,7 @@ public class ItemActivity extends FragmentActivity implements DeleteItem , Activ
         builder.show();
     }
 
-    void refresh(){
-        Iaddapter = new itemAddapter(getApplicationContext(),this,this);
-        ItemView.setAdapter(Iaddapter);
-    }
+
 
 
     @Override
@@ -170,6 +210,22 @@ public class ItemActivity extends FragmentActivity implements DeleteItem , Activ
         Intent intent = new Intent(this,ViewFileActivity.class);
         intent.putExtra("item",model);
         startActivity(intent);
+    }
+
+    @Override
+    public void startBillActivity(String Uri, boolean isBillPdf) {
+        if(isBillPdf){
+            Intent intent = new Intent(getApplicationContext(), pdfViewActivity.class);
+            intent.putExtra(pdfViewActivity.PDF_URI,Uri);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        else {
+           Intent intent = new Intent(getApplicationContext(),ImageActivity.class);
+           intent.putExtra(ImageActivity.KEY_FOR_IMAGE_URI,Uri);
+           intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+           startActivity(intent);
+        }
     }
 
     @Override

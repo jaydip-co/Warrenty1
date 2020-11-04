@@ -258,11 +258,6 @@
             android:elevation="1dp"
             android:scaleType="centerCrop"
             android:src="@drawable/default_image"/>
-       <com.jaydip.warrenty.ImageView
-           android:visibility="gone"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:elevation="2dp"/>
     </androidx.cardview.widget.CardView>
 
     <ImageView
@@ -362,6 +357,7 @@
                 android:textSize="@dimen/input_text_size" />
 
             <TextView
+                android:id="@+id/expireDateLabel"
                 android:textColor="@color/show_property"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -385,6 +381,15 @@
                 android:layout_marginTop="@dimen/margin_between_two_line"
                 android:text="details "
                 android:textSize="@dimen/input_text_size" />
+            <TextView
+                android:textColor="@color/show_property"
+                android:id="@+id/daysLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_between_two_line"
+                android:text="Days Left "
+                android:visibility="gone"
+                android:textSize="@dimen/input_text_size" />
 
         </LinearLayout>
 
@@ -404,6 +409,7 @@
                 android:text=":"
 
                 android:textSize="@dimen/input_text_size" />
+
 
             <TextView
                 android:textColor="@color/show_property"
@@ -444,6 +450,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_between_two_line"
                 android:text=":"
+                android:textSize="@dimen/input_text_size" />
+            <TextView
+                android:textColor="@color/show_property"
+                android:id="@+id/DaysLeftSeperator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_between_two_line"
+                android:text=":"
+                android:visibility="gone"
                 android:textSize="@dimen/input_text_size" />
         </LinearLayout>
 
@@ -503,6 +518,14 @@
                 android:layout_marginTop="@dimen/margin_between_two_line"
                 android:text="Month is name"
                 android:textSize="@dimen/input_text_size" />
+            <TextView
+                android:id="@+id/IDaysLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_between_two_line"
+                android:text="399 days Left"
+                android:textSize="@dimen/input_text_size"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

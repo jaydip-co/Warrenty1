@@ -30,6 +30,7 @@ import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 public class ImageActivity extends AppCompatActivity {
 
     private static final boolean AUTO_HIDE = true;
+    public static String KEY_FOR_IMAGE_URI = "KEY_FOR_IMAGE_URI";
 
     /**
      * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
@@ -43,7 +44,7 @@ public class ImageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_image);
         ImageView v = findViewById(R.id.imageView);
         Intent intent = getIntent();
-        String s = intent.getCharSequenceExtra("image").toString();
+        String s = intent.getCharSequenceExtra(KEY_FOR_IMAGE_URI).toString();
         File file = new File(s);
         Uri uri =  Uri.fromFile(file);
         try {

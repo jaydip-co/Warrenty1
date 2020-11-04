@@ -32,20 +32,48 @@
                 android:layout_height="wrap_content"/>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
-    <LinearLayout
-        app:layout_constraintTop_toBottomOf="@id/appbar"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        >
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/OneCategory"
+
+        <LinearLayout
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:orientation="vertical">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/OneCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:id="@+id/expiredTitle"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Expired Items"
+                android:visibility="gone"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="2dp"
+
+                android:id="@+id/expiredRecycle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="120dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addItem"
         android:layout_width="wrap_content"

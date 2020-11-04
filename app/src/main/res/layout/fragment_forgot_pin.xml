@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp"
+    tools:context=".ForgotPinFrag"
+    android:orientation="vertical">
+    <TextView
+        android:layout_marginTop="50dp"
+        android:text="Answer below recovery question to reset pin"
+        android:textSize="15dp"
+        style="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="10dp"
+        style="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Subtitle"
+        android:id="@+id/QuestionView"
+        android:text="key"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="2dp"
+        app:cardCornerRadius="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/card_height"
+        app:cardElevation="0dp">
+        <TextView
+            android:visibility="visible"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/labelAnswer"
+            android:textSize="@dimen/input_text_size"
+            android:layout_gravity="center|start"
+            android:text="Answer"
+            android:background="@color/white"
+            android:layout_width="wrap_content"
+            android:elevation="0.1dp"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/Answer"
+
+            android:textSize="@dimen/input_edit_text_size"
+            android:paddingLeft="@dimen/padding_in_edit_text"
+            android:paddingStart="@dimen/padding_in_edit_text"
+
+            android:background="@drawable/category_border"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/input_box_height"
+            android:layout_gravity="center"/>
+    </androidx.cardview.widget.CardView>
+    <Button
+        android:id="@+id/Continue"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/round_button"
+        android:elevation="1dp"
+        android:text="Continue"
+        android:layout_gravity="center_horizontal"
+        android:enabled="false"
+        />
+
+
+
+</LinearLayout>

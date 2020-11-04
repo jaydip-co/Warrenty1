@@ -1,8 +1,10 @@
 package com.jaydip.warrenty;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -45,10 +47,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 
 
@@ -73,6 +78,7 @@ public class AddItem extends AppCompatActivity implements PickiTCallbacks {
     PickiT picKit;
     LinearLayout pdfLayout;
     boolean isbillPdf,isBillset;
+    int STORAGE_REQUEST_CODE = 112;
 
 
 
@@ -217,23 +223,33 @@ public class AddItem extends AppCompatActivity implements PickiTCallbacks {
         AttachImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent,REQUEST_CODE_Image);
+                if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(AddItem.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_REQUEST_CODE);
+                }
+                else {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(intent, REQUEST_CODE_Image);
+                }
             }
         });
 
         AttachBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+                 if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(AddItem.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_REQUEST_CODE);
+                }
+                else {
+                     Intent intent = new Intent();
 
-                intent.setType("image/*");
-                String[] mimetype = {"image/*","application/pdf"};
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.putExtra(Intent.EXTRA_MIME_TYPES,mimetype);
-                startActivityForResult(intent,REQUEST_CODE_Bill);
+                     intent.setType("image/*");
+                     String[] mimetype = {"image/*", "application/pdf"};
+                     intent.setAction(Intent.ACTION_GET_CONTENT);
+                     intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetype);
+                     startActivityForResult(intent, REQUEST_CODE_Bill);
+                 }
             }
         });
         Isave.setOnClickListener(new View.OnClickListener() {
@@ -331,6 +347,21 @@ public class AddItem extends AppCompatActivity implements PickiTCallbacks {
         }
         return result;
 
+    }
+    void requestPermission(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(AddItem.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == STORAGE_REQUEST_CODE){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(getApplicationContext(),"Permission granted",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 
@@ -503,7 +534,7 @@ public class AddItem extends AppCompatActivity implements PickiTCallbacks {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(),ImageActivity.class);
-                    intent.putExtra("image",currentImageUri);
+                    intent.putExtra(ImageActivity.KEY_FOR_IMAGE_URI,currentImageUri);
                     startActivity(intent);
 
                 }
@@ -527,7 +558,7 @@ public class AddItem extends AppCompatActivity implements PickiTCallbacks {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getApplicationContext(),ImageActivity.class);
-                        intent.putExtra("image",currentBillUri);
+                        intent.putExtra(ImageActivity.KEY_FOR_IMAGE_URI,currentBillUri);
                         startActivity(intent);
                     }
                 });

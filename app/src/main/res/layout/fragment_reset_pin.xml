@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ResetPinFrag"
+    android:orientation="vertical">
+    <TextView
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="144dp"
+        android:text="Reset Pin"
+
+        android:textColor="@color/colorAccent"
+        android:textSize="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:layout_gravity="center_horizontal"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="14dp"
+        android:text="@string/InfoReset_pin"
+
+        android:textColor="@android:color/black"
+        android:textSize="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center">
+
+        <EditText
+            android:cursorVisible="false"
+            android:inputType="numberPassword"
+            android:id="@+id/pincode_edit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="0dp"
+            android:imeOptions="actionDone"
+            android:maxLength="4"/>
+
+        <LinearLayout
+            android:background="@color/white"
+            android:elevation="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+            <ImageView
+
+                android:id="@+id/pin1"
+                android:src="@drawable/pincode_back"
+                android:layout_width="@dimen/pincode_Box_width"
+                android:layout_height="@dimen/pincode_Box_height"/>
+            <ImageView
+                android:layout_marginLeft="10dp"
+                android:id="@+id/pin2"
+                android:src="@drawable/pincode_back"
+                android:layout_width="@dimen/pincode_Box_width"
+                android:layout_height="@dimen/pincode_Box_height"/>
+            <ImageView
+                android:layout_marginLeft="10dp"
+                android:id="@+id/pin3"
+                android:src="@drawable/pincode_back"
+                android:layout_width="@dimen/pincode_Box_width"
+                android:layout_height="@dimen/pincode_Box_height"/>
+            <ImageView
+                android:layout_marginLeft="10dp"
+                android:id="@+id/pin4"
+                android:src="@drawable/pincode_back"
+                android:layout_width="@dimen/pincode_Box_width"
+                android:layout_height="@dimen/pincode_Box_height"/>
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/ResetPin"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/round_button"
+        android:elevation="1dp"
+        android:text="Reset Pin"
+        android:layout_gravity="center_horizontal"
+        android:enabled="false"
+        />
+
+
+</LinearLayout>

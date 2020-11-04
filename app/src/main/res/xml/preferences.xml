@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+  <PreferenceCategory
+      app:iconSpaceReserved="false"
+      android:title="Notification setting">
     <SwitchPreference android:defaultValue="false"
         android:title="Notification"
         app:iconSpaceReserved="false"
@@ -9,13 +12,38 @@
         android:summary="get notification when expire date is near"/>
 
     <Preference
+        app:dependency="notification_switch"
         android:summary="tap to select time"
         app:iconSpaceReserved="false"
         android:key="time"
         android:title="8:30"/>
-    <SwitchPreference android:defaultValue="false"
+  </PreferenceCategory>
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        android:title="Backup data"
+        android:summary="Enable to auto back up data">
+    <SwitchPreference
+        android:defaultValue="true"
         android:title="Sync with Gmail"
         android:summary="switch to sync with Gmail"
         app:iconSpaceReserved="false"
         android:key="Sync_switch"/>
+
+        <Preference
+            android:summary="tap to Restore"
+            app:iconSpaceReserved="false"
+            android:key="sync"
+            app:dependency="Sync_switch"
+            app:isPreferenceVisible="true"
+            android:title="update found"/>
+      <Preference
+          android:summary="tap to Restore"
+          app:iconSpaceReserved="false"
+          android:key="restore"
+          app:isPreferenceVisible="false"
+          app:dependency="Sync_switch"
+          android:title="update found"/>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

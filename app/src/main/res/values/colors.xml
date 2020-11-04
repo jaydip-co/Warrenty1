@@ -7,6 +7,7 @@
     <color name="white">#FFFFFF</color>
     <color name="backgroud">#A1887F</color>
     <color name="label">#ffffff</color>
+    <color name="pin_back">#B0BEC5</color>
 
     <color name="black_overlay">#66000000</color>
     <color name="show_property">@color/colorPrimary</color>

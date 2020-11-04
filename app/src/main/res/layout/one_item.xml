@@ -116,12 +116,21 @@
         android:src="@drawable/delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
     <ImageView
-        android:src="@drawable/ic_baseline_edit_24"
+        android:id="@+id/edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
         android:layout_marginTop="35dp"
         android:layout_marginRight="10dp"
-        android:id="@+id/edit"
+        android:src="@drawable/ic_baseline_edit_24" />
+    <ImageView
+        android:src="@drawable/reciept_small"
+        android:id="@+id/ViewBill"
         android:layout_gravity="end"
+        android:layout_marginTop="62dp"
+        android:layout_marginRight="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

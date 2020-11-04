@@ -1,13 +1,24 @@
 package com.jaydip.warrenty;
 
+import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.app.TimePickerDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -18,11 +29,21 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
+import com.jaydip.warrenty.Service.DriveServiceHelper;
+import com.jaydip.warrenty.Workers.downloadWorker;
 import com.jaydip.warrenty.Workers.uploadZip;
 import com.jaydip.warrenty.Workers.zipConverter;
+import com.jaydip.warrenty.prefsUtil.PrefUtil;
+import com.jaydip.warrenty.prefsUtil.prefIds;
 
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,10 +53,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceGroupAdapter;
 import androidx.preference.PreferenceManager;
+import androidx.preference.PreferenceScreen;
+import androidx.preference.PreferenceViewHolder;
 import androidx.preference.SwitchPreference;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.ListenableWorker;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
+
+import static com.jaydip.warrenty.BackUpFragment.Key_For_Status_String;
+import static com.jaydip.warrenty.BackUpFragment.Key_For_Status_process;
 
 public class SettingsActivity extends AppCompatActivity {
     ImageView backButton;
@@ -66,14 +96,29 @@ public class SettingsActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
     }
 
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
-        int  SIGN_IN_CODE = 205;
+       public static   int  SIGN_IN_CODE = 205;
         SwitchPreference switchPreference,syncSwitch;
-        Preference timePref;
+        Preference timePref,update,restore;
         SharedPreferences.Editor editor;
+        String id = "";
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            getActivity().registerReceiver(receiver,new IntentFilter(getString(R.string.intent_filter_for_process)));
+        }
+
+        @Override
+        public void onDestroyView() {
+            super.onDestroyView();
+            getActivity().unregisterReceiver(receiver);
+        }
+
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -81,6 +126,12 @@ public class SettingsActivity extends AppCompatActivity {
             switchPreference = getPreferenceManager().findPreference("notification_switch");
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
             syncSwitch = getPreferenceManager().findPreference("Sync_switch");
+            update = getPreferenceManager().findPreference("sync");
+//            update.setEnabled(false);
+            update.setLayoutResource(R.layout.update_button);
+            restore = getPreferenceScreen().findPreference("restore");
+            restore.setLayoutResource(R.layout.restore_button);
+
             syncSwitch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -88,6 +139,7 @@ public class SettingsActivity extends AppCompatActivity {
                     if(val){
 
                         setSyncProsess();
+
                     }
                     else {
 
@@ -99,8 +151,11 @@ public class SettingsActivity extends AppCompatActivity {
              editor = preferences.edit();
             int hour = preferences.getInt(key_time_hour,8);
             int minute = preferences.getInt(key_time_Minute,30);
-            String summery = preferences.getString(key_gmail,"enable sync");
-            syncSwitch.setSummary(summery);
+//            String gmail = PrefUtil.getPrefField(getContext(),prefIds.LOGED_IN_ACOUNT);
+//            if(!gmail.equals(PrefUtil.Default_Value)){
+//                syncSwitch.setSummary(gmail);
+//            }
+
 
             switchPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
@@ -129,6 +184,116 @@ public class SettingsActivity extends AppCompatActivity {
                     return true;
                 }
             });
+            setInitialValues();
+//            String InitialUpdate = PrefUtil.getPrefField(getContext(),prefIds.INITIAL_UPDATE_DONE);
+//            if(InitialUpdate.equals(PrefUtil.Default_Value)){
+//               syncSwitch.setChecked(false);
+//            }
+
+//            update.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//                @Override
+//                public boolean onPreferenceClick(Preference preference) {
+//                    Log.e("jaydip",id);
+//                    WorkManager manager = WorkManager.getInstance(getContext());
+//                    WorkRequest request = new OneTimeWorkRequest.Builder(downloadWorker.class)
+//                            .build();
+//                    manager.enqueue(request);
+//                    return false;
+//                }
+//            });
+//            setup();
+
+
+//            Log.e("jaydip","restore text "+t.getText().toString());
+
+
+
+        }
+        void setInitialValues(){
+            String download_Pending = PrefUtil.getPrefField(getContext(),prefIds.DOWNLOAD_PENDING);
+            if(!download_Pending.equals(PrefUtil.Default_Value)){
+                restore.setVisible(true);
+                update.setVisible(false);
+            }
+            String gmail = PrefUtil.getPrefField(getContext(),prefIds.LOGED_IN_ACOUNT);
+            if(!gmail.equals(PrefUtil.Default_Value)){
+                syncSwitch.setSummary(gmail);
+
+            }
+            else {
+                syncSwitch.setChecked(false);
+            }
+            update.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    createPdf();
+
+                    return true;
+                }
+            });
+            restore.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    downloadBackup();
+                    return false;
+                }
+            });
+
+
+        }
+
+
+        void setRestore(){
+
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getContext());
+            if(account != null){
+                String intialUpdate = PrefUtil.getPrefField(getContext(), prefIds.INITIAL_UPDATE_DONE);
+                if(intialUpdate.equals(PrefUtil.Default_Value)){
+                    DriveServiceHelper helper = new DriveServiceHelper(getContext());
+                    helper.getDetail().addOnSuccessListener(new OnSuccessListener<String>() {
+                        @Override
+                        public void onSuccess(String s) {
+                            if(!s.equals("nothing")){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+                                        .setTitle("Update Found With Account")
+                                        .setMessage("Click Download to start download")
+                                        .setPositiveButton("Download", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                               downloadBackup();
+
+                                            }
+                                        })
+                                        .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                PrefUtil.saveToPrivate(getContext(),prefIds.DOWNLOAD_PENDING,"yes");
+                                                restore.setVisible(true);
+                                            }
+                                        }).setCancelable(false);
+                                builder.show();
+                                PrefUtil.saveToPrivate(getActivity(),prefIds.LAST_BACKUP_ID,s);
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+//                    restore.setVisible(true);
+                    update.setVisible(false);
+                }
+                else {
+                    update.setVisible(true);
+                }
+            }
+
+        }
+        void downloadBackup(){
+            WorkRequest workRequest = new OneTimeWorkRequest.Builder(downloadWorker.class)
+                    .build();
+            WorkManager.getInstance(getContext()).enqueue(workRequest);
         }
         void createPdf(){
 
@@ -160,7 +325,7 @@ public class SettingsActivity extends AppCompatActivity {
             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getContext());
             if(account == null){
                 GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestScopes(new Scope(DriveScopes.DRIVE_FILE))
+                        .requestScopes(new Scope(DriveScopes.DRIVE_APPDATA))
                         .requestEmail()
                         .build();
                 GoogleSignInClient client = GoogleSignIn.getClient(getContext(),signInOptions);
@@ -168,7 +333,8 @@ public class SettingsActivity extends AppCompatActivity {
             }
             else
             {
-                createPdf();
+//                setRestore();
+//                createPdf();
                 syncSwitch.setChecked(true);
             }
 
@@ -186,8 +352,9 @@ public class SettingsActivity extends AppCompatActivity {
                                 Log.e("SettingActivity",googleSignInAccount.getEmail());
                                 syncSwitch.setSummary(googleSignInAccount.getEmail());
                                 syncSwitch.setChecked(true);
-                                editor.putString(key_gmail,googleSignInAccount.getEmail());
-                                createPdf();
+                               PrefUtil.saveToPrivate(getContext(),prefIds.LOGED_IN_ACOUNT,googleSignInAccount.getEmail());
+//                                createPdf();
+                                setRestore();
 
                             }
                         })
@@ -199,6 +366,24 @@ public class SettingsActivity extends AppCompatActivity {
                             }
                         });
             }
+
         }
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                int prog = intent.getIntExtra(Key_For_Status_process,0);
+                if(prog == 0){
+                    Toast.makeText(getContext(),"download started..",Toast.LENGTH_LONG).show();
+                }
+                if(prog == 100){
+                    Toast.makeText(getContext(),"download Completed",Toast.LENGTH_LONG).show();
+                    PrefUtil.saveToPrivate(getActivity(),prefIds.DOWNLOAD_PENDING,PrefUtil.Default_Value);
+                    restore.setVisible(false);
+                    update.setVisible(true);
+                    System.exit(0);
+                }
+            }
+        };
     }
 }

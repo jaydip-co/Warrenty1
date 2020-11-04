@@ -1,8 +1,10 @@
 package com.jaydip.warrenty;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -25,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hbisoft.pickit.PickiT;
 import com.hbisoft.pickit.PickiTCallbacks;
@@ -42,10 +45,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 
 public class EditItem extends AppCompatActivity implements PickiTCallbacks {
@@ -70,8 +76,7 @@ public class EditItem extends AppCompatActivity implements PickiTCallbacks {
     Animation labelUp,labelDown;
     boolean isbillchanged,isImageChanged,ispdfchanged,isBillPdf;
     PickiT picKit;
-    LinearLayout linearLayout;
-
+    int STORAGE_REQUEST_CODE = 112;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,21 +215,31 @@ public class EditItem extends AppCompatActivity implements PickiTCallbacks {
         AttachImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent itemIntent = new Intent();
-                itemIntent.setAction(Intent.ACTION_GET_CONTENT);
-                itemIntent.setType("image/*");
-                startActivityForResult(itemIntent,REQUEST_CODE_Image);
+                 if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(EditItem.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_REQUEST_CODE);
+                }
+                else {
+                     Intent itemIntent = new Intent();
+                     itemIntent.setAction(Intent.ACTION_GET_CONTENT);
+                     itemIntent.setType("image/*");
+                     startActivityForResult(itemIntent, REQUEST_CODE_Image);
+                 }
             }
         });
         AttachBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent itemIntent = new Intent();
-                itemIntent.setAction(Intent.ACTION_GET_CONTENT);
-                itemIntent.setType("image/*");
-                String[] mimetype = {"image/*","application/pdf"};
-                itemIntent.putExtra(Intent.EXTRA_MIME_TYPES,mimetype);
-                startActivityForResult(itemIntent,REQUEST_CODE_Bill);
+                 if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(EditItem.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_REQUEST_CODE);
+                }
+                else {
+                     Intent itemIntent = new Intent();
+                     itemIntent.setAction(Intent.ACTION_GET_CONTENT);
+                     itemIntent.setType("image/*");
+                     String[] mimetype = {"image/*", "application/pdf"};
+                     itemIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimetype);
+                     startActivityForResult(itemIntent, REQUEST_CODE_Bill);
+                 }
 
 
             }
@@ -561,6 +576,15 @@ public class EditItem extends AppCompatActivity implements PickiTCallbacks {
             }
         }
     }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == STORAGE_REQUEST_CODE){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(getApplicationContext(),"Permission granted",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     void setBill(Uri path, String type){
         try {
@@ -593,7 +617,7 @@ public class EditItem extends AppCompatActivity implements PickiTCallbacks {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(),ImageActivity.class);
-                    intent.putExtra("image",currentImageUri);
+                    intent.putExtra(ImageActivity.KEY_FOR_IMAGE_URI,currentImageUri);
                     startActivity(intent);
 
                 }
@@ -615,7 +639,7 @@ public class EditItem extends AppCompatActivity implements PickiTCallbacks {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getApplicationContext(), ImageActivity.class);
-                        intent.putExtra("image", currentBillUri);
+                        intent.putExtra(ImageActivity.KEY_FOR_IMAGE_URI, currentBillUri);
                         startActivity(intent);
                     }
                 });

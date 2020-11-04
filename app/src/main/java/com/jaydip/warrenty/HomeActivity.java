@@ -1,5 +1,7 @@
 package com.jaydip.warrenty;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ComponentName;
@@ -19,20 +21,38 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.accounts.GoogleAccountManager;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.DriveScopes;
 import com.jaydip.warrenty.Addapters.CategoryAddapter;
 import com.jaydip.warrenty.Broadcast.NotificationRecieverer;
 import com.jaydip.warrenty.Listeners.DeleteCategory;
 import com.jaydip.warrenty.Models.CategoryModel;
+import com.jaydip.warrenty.Service.DriveServiceHelper;
 import com.jaydip.warrenty.ViewModels.CategoryViewModel;
 import com.jaydip.warrenty.ViewModels.ItemViewModel;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -50,6 +70,7 @@ public class HomeActivity extends AppCompatActivity implements DeleteCategory {
     boolean isopen;
     List<String> categories;
     ImageView background,setting;
+    int STORAGE_REQUEST_CODE = 112;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -58,6 +79,8 @@ public class HomeActivity extends AppCompatActivity implements DeleteCategory {
 
 
         setContentView(R.layout.activity_home);
+
+//        SearchForFile();
 
         ///////////////////////////////////////////////////////////
         Caddapter = new CategoryAddapter(this);
@@ -153,13 +176,29 @@ public class HomeActivity extends AppCompatActivity implements DeleteCategory {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                categoryViewModel.addDefault();
                 Log.e("jaydip","clicked");
-                ComponentName name = new ComponentName(getApplicationContext(), NotificationRecieverer.class);
+                DriveServiceHelper helper = new DriveServiceHelper(getApplicationContext());
+//                helper.deleteLastBackup();
+                helper.printAllIDs();
+//                GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+//                if(account != null){
+//                    GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(getApplicationContext(),
+//                            Collections.singleton(DriveScopes.DRIVE_APPDATA));
+//                    credential.setSelectedAccount(account.getAccount());
+//                    Drive drive = new Drive.Builder(AndroidHttp.newCompatibleTransport(),new GsonFactory(),credential)
+//                            .setApplicationName("Warranty")
+//                            .build();
+//                    DriveServiceHelper helper = new DriveServiceHelper(drive);
+//                    helper.delete();
+//                }
+//                ComponentName name = new ComponentName(getApplicationContext(), NotificationRecieverer.class);
+//
+//                PackageManager manager = getPackageManager();
+//                manager.setComponentEnabledSetting(name,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,PackageManager.DONT_KILL_APP);
+//                Intent intent = new Intent(getApplicationContext(), NotificationRecieverer.class);
+//                getApplicationContext().sendBroadcast(intent);
 
-                PackageManager manager = getPackageManager();
-                manager.setComponentEnabledSetting(name,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,PackageManager.DONT_KILL_APP);
-                Intent intent = new Intent(getApplicationContext(), NotificationRecieverer.class);
-                getApplicationContext().sendBroadcast(intent);
             }
         });
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -170,7 +209,11 @@ public class HomeActivity extends AppCompatActivity implements DeleteCategory {
             Log.e("jaydip","channel created");
         }
 //        savetoZar();
+        File file = new File(String.valueOf(getDatabasePath("WarrentyDatabase-wal")));
+        Log.e("jaydip",file.getAbsolutePath());
     }
+
+
 @RequiresApi(api = Build.VERSION_CODES.N)
 void savetoZar(){
 //    Log.e("jaydip","started");
@@ -192,9 +235,11 @@ void savetoZar(){
 //        PathProvider.compressToZar(file.getAbsolutePath(),newfile.getAbsolutePath()+"file.zip");
 //    }
 }
+///////////////requesting permission
 
 
     ///// ad new category
+
     void addCategory(){
         EditText newCategory;
 

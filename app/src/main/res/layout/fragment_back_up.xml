@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".SetPassFragment"
+    android:background="#80CBC4"
+    >
+  <ImageView
+      android:id="@+id/uploadLogo"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      android:layout_marginTop="20dp"
+      android:src="@drawable/backup"
+      android:layout_width="300dp"
+      android:layout_height="300dp"
+      app:tint="@color/white" />
+  <TextView
+      android:id="@+id/update_text"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/uploadLogo"
+      app:layout_constraintEnd_toEndOf="parent"
+      android:text="Chech for backup with your Gmail account"
+      android:textColor="@color/white"
+      android:textSize="20dp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"/>
+  <TextView
+      android:id="@+id/status"
+      android:visibility="gone"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintBottom_toTopOf="@id/check_button"
+      android:layout_marginBottom="50dp"
+      android:text="Backup Found"
+      android:textColor="@color/white"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"/>
+
+
+
+
+  <ProgressBar
+
+      android:id="@+id/progressBar"
+      android:max="100"
+      android:visibility="gone"
+      style="?android:attr/progressBarStyleHorizontal"
+
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintBottom_toTopOf="@id/check_button"
+      android:progress="0"
+      android:layout_marginBottom="20dp"
+      android:progressTintMode="multiply"
+      android:progressTint="@color/white"
+      android:progressBackgroundTint="@color/white"
+      android:layout_marginLeft="10dp"
+      android:layout_marginRight="10dp"
+
+
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
+  <ProgressBar
+      android:visibility="gone"
+      android:id="@+id/progress_circular"
+      style="?android:attr/progressBarStyleLarge"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintBottom_toTopOf="@+id/check_button"
+      android:layout_marginBottom="10dp"
+      android:indeterminateTint="@color/white"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"/>
+  <Button
+      android:padding="5dp"
+      android:id="@+id/check_button"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      android:layout_marginBottom="200dp"
+      android:text="Check For Update"
+      android:layout_width="wrap_content"
+      android:background="@drawable/round_button"
+      android:layout_height="wrap_content" />
+
+  <Button
+      android:visibility="invisible"
+      android:id="@+id/changeACoount"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="12dp"
+      android:background="@drawable/round_button"
+      android:padding="5dp"
+      android:text="Try other account"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/check_button" />
+<TextView
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/check_button"
+    android:layout_marginTop="6dp"
+    android:textColor="@color/white"
+    android:id="@+id/skip_button"
+    android:text="Skip"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

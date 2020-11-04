@@ -59,6 +59,16 @@ public class CategoryViewModel extends AndroidViewModel {
                 mdao.addcategory(model);
         });
     }
+    public void addDefault(){
+        mdatabase.writeExecutor.execute(()->{
+            mdao.IgnoreIf("Electronics",0,"electronics1");
+            mdao.IgnoreIf("Sports",0,"sports");
+            mdao.IgnoreIf("Kitchen",0,"kitchen");
+            mdao.IgnoreIf("Fashion",0,"tshirt");
+            mdao.IgnoreIf("Vehicles",0,"automotive");
+            mdao.IgnoreIf("Mobile",0,"mobile");
+        });
+    }
 
     public void incrementItem(String category){
         WarrentyDatabase.writeExecutor.execute(()->{

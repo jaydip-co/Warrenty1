@@ -28,7 +28,9 @@
         <activity android:name=".pdfViewActivity" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" />
+            android:label="@string/title_activity_settings" >
+
+        </activity>
         <activity
             android:name=".ImageActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -54,11 +56,7 @@
             android:name=".HomeActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
             android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
@@ -66,6 +64,12 @@
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/ItemTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
 
         </activity>
 

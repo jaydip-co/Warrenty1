@@ -12,6 +12,17 @@
         <item>Tv</item>
         <item>Laptop</item>
     </string-array>
+    <string-array name="recoveryQuestions">
+
+        <item>What is the name of your first pet?</item>
+        <item>What is your mothers maiden name?</item>
+        <item>What was your pet name in school?</item>
+        <item>Who was your childhood hero?</item>
+        <item>Where was your best family vacation as a kid?</item>
+    </string-array>
+
+
+
     <string name="title_activity_image">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -31,4 +42,9 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="Inform_pin">"Generate pin to excess later"</string>
+    <string name="InfoReset_pin">Enter new pin</string>
+    <string name="intent_filter_for_process">satatusForDownload</string>
+
 </resources>

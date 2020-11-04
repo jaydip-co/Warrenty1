@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".QuestionsFrag"
+    android:layout_margin="10dp"
+    android:orientation="vertical">
+    <TextView
+        android:text="Enter Details"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center"
+        style="@style/TextAppearance.AppCompat.Headline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="10dp"
+
+        app:cardCornerRadius="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/card_height"
+        app:cardElevation="0dp">
+        <TextView
+            android:visibility="visible"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/labelName"
+            android:textSize="@dimen/input_text_size"
+            android:layout_gravity="center|start"
+            android:text="Enter Name"
+            android:background="@color/white"
+            android:layout_width="wrap_content"
+            android:elevation="0.1dp"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/Name"
+
+            android:textSize="@dimen/input_edit_text_size"
+            android:paddingLeft="@dimen/padding_in_edit_text"
+            android:paddingStart="@dimen/padding_in_edit_text"
+
+            android:background="@drawable/category_border"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/input_box_height"
+            android:layout_gravity="center"/>
+    </androidx.cardview.widget.CardView>
+    <TextView
+        android:layout_marginTop="20dp"
+        android:text="Select Question and answer it to recover pin later"
+        android:layout_width="wrap_content"
+        android:textColor="@android:color/darker_gray"
+        style="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Subtitle"
+        android:layout_height="wrap_content"/>
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="4dp"
+        app:cardElevation="0dp"
+        android:layout_width="match_parent"
+        app:cardCornerRadius="10dp"
+        android:layout_height="@dimen/card_height">
+        <TextView
+            android:visibility="gone"
+            android:text="Category"
+            android:background="@color/label"
+            android:elevation="0.1dp"
+            android:textSize="11.6dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Spinner
+
+            android:id="@+id/Questions"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/input_box_height"
+
+            android:layout_gravity="bottom"
+            android:background="@drawable/category_border"
+            android:gravity="center_vertical"
+            android:minWidth="0dp"
+            android:padding="5dp"
+            android:popupElevation="2dp"
+            android:popupTheme="@style/Theme.AppCompat.DayNight.Dialog.Alert" />
+
+        <ImageView
+            android:layout_gravity="center|end"
+            android:src="@drawable/drop_down"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="2dp"
+        app:cardCornerRadius="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/card_height"
+        app:cardElevation="0dp">
+        <TextView
+            android:visibility="visible"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/labelAnswer"
+            android:textSize="@dimen/input_text_size"
+            android:layout_gravity="center|start"
+            android:text="Answer"
+            android:background="@color/white"
+            android:layout_width="wrap_content"
+            android:elevation="0.1dp"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/Answer"
+
+            android:textSize="@dimen/input_edit_text_size"
+            android:paddingLeft="@dimen/padding_in_edit_text"
+            android:paddingStart="@dimen/padding_in_edit_text"
+
+            android:background="@drawable/category_border"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/input_box_height"
+            android:layout_gravity="center"/>
+    </androidx.cardview.widget.CardView>
+    <Button
+        android:id="@+id/Continue"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/round_button"
+        android:elevation="1dp"
+        android:text="Continue"
+        android:layout_gravity="center_horizontal"
+        android:enabled="false"
+        />
+
+
+
+
+
+</LinearLayout>

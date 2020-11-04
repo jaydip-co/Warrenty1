@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
+import com.jaydip.warrenty.prefsUtil.PrefUtil;
+import com.jaydip.warrenty.prefsUtil.prefIds;
 import com.shockwave.pdfium.PdfiumCore;
 
 public class MainActivity extends FragmentActivity {
@@ -31,16 +33,14 @@ public class MainActivity extends FragmentActivity {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         loginPass = findViewById(R.id.LoginPass);
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-
-        final String pasString = sharedPreferences.getString(getString(R.string.pass_key),"nothing");
-        HomeFragment home= new HomeFragment(pasString);
+        String pasString = PrefUtil.getPrefField(getApplication(), prefIds.FINAL_PIN);
+       HomeFragment home= new HomeFragment(pasString);
        Log.e("password",pasString);
        ////////////////////////////////////////////////////////////////
         //cheching if password is exsists or not
-        if(pasString.equals("nothing")){
+//        transaction.add(R.id.Container,new QuestionsFrag());
+//        transaction.commit();
+        if(pasString.equals(PrefUtil.Default_Value)){
             transaction.add(R.id.Container,pass);
             transaction.commit();
         }

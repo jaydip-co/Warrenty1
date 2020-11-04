@@ -1,5 +1,6 @@
 package com.jaydip.warrenty.Workers;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
@@ -14,17 +15,25 @@ import java.util.zip.ZipOutputStream;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+
+import com.jaydip.warrenty.App;
+import com.jaydip.warrenty.R;
 
 public class zipConverter extends Worker {
     BufferedInputStream origin = null;
     ZipOutputStream stream;
     int Buffer = 1024;
     byte data[];
+    NotificationManager manager;
+    NotificationCompat.Builder mBuilder;
 
     public zipConverter(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
+        mBuilder = new NotificationCompat.Builder(getApplicationContext(), App.NOTIFICATI_ID);
+        manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -32,6 +41,11 @@ public class zipConverter extends Worker {
     @Override
     public Result doWork() {
         try {
+            mBuilder.setContentTitle("Compressing..")
+                    .setContentText("Upload Task")
+                    .setSmallIcon(R.drawable.backup);
+            mBuilder.setProgress(100,0,false);
+            manager.notify(110,mBuilder.build());
 
 
             File file = new File(getApplicationContext().getDataDir(), "jay.zip");
