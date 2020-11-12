@@ -35,7 +35,7 @@ import java.util.concurrent.Executors;
 public class HomeFragment extends Fragment {
 
     Button loginButton;
-    EditText loginpassField,pincode;
+    EditText pincode;
     String pass;
     Activity main;
     TextView description,ForgotPin;
@@ -64,7 +64,6 @@ public class HomeFragment extends Fragment {
         //////////////////////////////////////////////////////
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         loginButton = v.findViewById(R.id.Login);
-        loginpassField = v.findViewById(R.id.LoginPass);
         main = getActivity();
         String userName= PrefUtil.getPrefField(getContext(), prefIds.USER_NAME);
         String textDes = "hey, "+userName;

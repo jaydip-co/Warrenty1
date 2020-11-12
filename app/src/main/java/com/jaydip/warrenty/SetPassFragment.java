@@ -31,15 +31,13 @@ import com.jaydip.warrenty.prefsUtil.prefIds;
 
 public class SetPassFragment extends Fragment {
 
-    EditText pass,pincode,pincodeAgain;
+    EditText pincode,pincodeAgain;
     ImageView e1,e2,e3,e4,e1Again,e2Again,e3Again,e4Again;
-    EditText passAgain;
+
     Drawable input;
     Drawable inputFocus;
     Button save;
-    TextView error,samePass;
     CategoryViewModel categoryViewModel;
-    String pin = "";
     StringBuilder builder;
     Drawable pin_entered,pin_back,pinback_focus,pinback_entered_focus,pin_error;
     boolean isWrongPin = false;
@@ -69,11 +67,9 @@ public class SetPassFragment extends Fragment {
         input = getResources().getDrawable(R.drawable.round_intput);
         inputFocus = getResources().getDrawable(R.drawable.round_input_focus);
 
-        pass = v.findViewById(R.id.password);
-        passAgain = v.findViewById(R.id.passwordagain);
+
         save = v.findViewById(R.id.save);
-        error = v.findViewById(R.id.correction);
-        samePass = v.findViewById(R.id.samepass);
+
         e1 = v.findViewById(R.id.pin1);
         e2 = v.findViewById(R.id.pin2);
         e3 = v.findViewById(R.id.pin3);
@@ -112,26 +108,9 @@ public class SetPassFragment extends Fragment {
         });
 
 
-        View.OnFocusChangeListener focuslisner = new View.OnFocusChangeListener() {
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                EditText view = (EditText) v;
-                if(hasFocus){
-
-                    view.setBackground(inputFocus);
-                }
-                else {
-
-                    view.setBackground(input);
-
-                }
-            }
-        };
 
 
-       pass.setOnFocusChangeListener(focuslisner);
-       passAgain.setOnFocusChangeListener(focuslisner);
+
 
        save.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -159,51 +138,9 @@ public class SetPassFragment extends Fragment {
        });
 
 
-       pass.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               error.setText("");
-               error.setVisibility(View.GONE);
-           }
-       });
 
 
-       pass.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-           }
-
-           @Override
-           public void onTextChanged(CharSequence s, int start, int before, int count) {
-//               checkPass(s);
-               if(passAgain.getText().toString().length() > 0){
-                   chckSame(passAgain.getText().toString());
-               }
-           }
-
-           @Override
-           public void afterTextChanged(Editable s) {
-
-           }
-       });
-
-       passAgain.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-           }
-
-           @Override
-           public void onTextChanged(CharSequence s, int start, int before, int count) {
-               chckSame(s);
-           }
-
-           @Override
-           public void afterTextChanged(Editable s) {
-
-           }
-       });
         TextWatcher watcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -374,24 +311,5 @@ public class SetPassFragment extends Fragment {
         }
 
     }
-
-    public void chckSame(CharSequence s){
-        String re = s.toString();
-        if(re.length() > 0){
-            if(!re.equals(pass.getText().toString())){
-                samePass.setVisibility(View.VISIBLE);
-            }
-            else{
-                samePass.setVisibility(View.GONE);
-            }
-        }
-        else{
-            samePass.setVisibility(View.GONE);
-        }
-
-    }
-
-
-
 
 }

@@ -124,6 +124,7 @@ public class ItemActivity extends FragmentActivity implements DeleteItem , Activ
                 }
                 else {
                     expiredTitle.setVisibility(View.GONE);
+                    expiredAddapter.setItems(expiredItem);
 
                 }
 //                expiredTitle.setVisibility(View.VISIBLE);
@@ -150,23 +151,8 @@ public class ItemActivity extends FragmentActivity implements DeleteItem , Activ
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.item_add,menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.addItem){
-            Intent intent = new Intent(this,AddItem.class);
-            startActivity(intent);
-            return true;
 
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     //listening for delete item
     @Override
@@ -189,14 +175,6 @@ public class ItemActivity extends FragmentActivity implements DeleteItem , Activ
         builder.show();
     }
 
-
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.e("jaydip","result");
-    }
 
     @Override
     public void satrtActivity(ItemModel model) {

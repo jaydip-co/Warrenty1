@@ -35,6 +35,8 @@ import com.jaydip.warrenty.Models.CategoryModel;
 import com.jaydip.warrenty.Models.ItemModel;
 import com.jaydip.warrenty.ViewModels.CategoryViewModel;
 import com.jaydip.warrenty.ViewModels.ItemViewModel;
+import com.jaydip.warrenty.prefsUtil.PrefUtil;
+import com.jaydip.warrenty.prefsUtil.prefIds;
 import com.shockwave.pdfium.PdfiumCore;
 
 import java.io.ByteArrayOutputStream;
@@ -71,12 +73,11 @@ public class AddItem extends AppCompatActivity implements PickiTCallbacks {
     ByteArrayOutputStream stream ;
     CategoryViewModel categoryViewModel;
     String currentCategory,pdfPath,currentBillUri,currentImageUri,currentpdfpath;
-    int day,Month,Year,eMonth,eYear;
+    int day,Month,Year;
     ItemModel model;
-    CategoryModel currentCategoryModel;
     public static int CODE_FOR_PDF = 205;
     PickiT picKit;
-    LinearLayout pdfLayout;
+
     boolean isbillPdf,isBillset;
     int STORAGE_REQUEST_CODE = 112;
 
@@ -425,9 +426,7 @@ public class AddItem extends AppCompatActivity implements PickiTCallbacks {
                 model.setBillPdf(isbillPdf);
             }
          itemViewModel.addItem(model);
-
-
-
+            PrefUtil.saveToPrivate(getApplicationContext(), prefIds.Daily_update_Check,"yes");
             Log.e("jaydip", "added");
             Toast.makeText(this, Iname.getText().toString() + " added ", Toast.LENGTH_SHORT).show();
             finish();

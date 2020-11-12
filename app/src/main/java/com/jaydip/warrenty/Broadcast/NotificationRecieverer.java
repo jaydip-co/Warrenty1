@@ -20,6 +20,8 @@ import com.jaydip.warrenty.ItemActivity;
 import com.jaydip.warrenty.Models.ItemModel;
 import com.jaydip.warrenty.R;
 import com.jaydip.warrenty.databases.WarrentyDatabase;
+import com.jaydip.warrenty.prefsUtil.PrefUtil;
+import com.jaydip.warrenty.prefsUtil.prefIds;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,6 +43,9 @@ public class NotificationRecieverer  extends BroadcastReceiver {
         WarrentyDatabase.writeExecutor.execute(new Runnable() {
             @Override
             public void run() {
+                int leftDayT = PrefUtil.getPrefFieldInt(context, prefIds.ALARM_DAY);
+                int leftDay = leftDayT == 0 ? 10 : leftDayT;
+                
                 List<ItemModel> models = dao.getModels();
 
                 for(ItemModel model : models){
@@ -57,7 +62,7 @@ public class NotificationRecieverer  extends BroadcastReceiver {
                         int days = (int) TimeUnit.MILLISECONDS.toDays(Math.abs(def));
 
 
-                    if(days < 8){
+                    if(days < leftDay){
                         Intent intent1 = new Intent(context,ItemActivity.class);
                         intent.putExtra("title",model.getCategory());
                         PendingIntent pentingIntent = PendingIntent.getActivity(context,210,intent1,PendingIntent.FLAG_ONE_SHOT);

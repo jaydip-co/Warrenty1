@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -69,9 +70,7 @@ import static com.jaydip.warrenty.BackUpFragment.Key_For_Status_process;
 
 public class SettingsActivity extends AppCompatActivity {
     ImageView backButton;
-    public static String key_time_hour = "time_hour";
-    public static String key_time_Minute = "time_minute";
-    public static String key_gmail ="key_for_current_signIn_gmail";
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -102,8 +101,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
        public static   int  SIGN_IN_CODE = 205;
-        SwitchPreference switchPreference,syncSwitch;
-        Preference timePref,update,restore;
+        SwitchPreference switchPreference,syncSwitch,dailyUpdate;
+        Preference timePref,update,restore,DaysPref;
         SharedPreferences.Editor editor;
         String id = "";
 
@@ -131,6 +130,8 @@ public class SettingsActivity extends AppCompatActivity {
             update.setLayoutResource(R.layout.update_button);
             restore = getPreferenceScreen().findPreference("restore");
             restore.setLayoutResource(R.layout.restore_button);
+            DaysPref = getPreferenceScreen().findPreference("Days");
+            dailyUpdate = getPreferenceScreen().findPreference("Daily_update");
 
             syncSwitch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
@@ -149,8 +150,10 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
              editor = preferences.edit();
-            int hour = preferences.getInt(key_time_hour,8);
-            int minute = preferences.getInt(key_time_Minute,30);
+            int hourT = PrefUtil.getPrefFieldInt(getContext(),prefIds.ALARM_TIME_HOUR);
+            int minuteT = PrefUtil.getPrefFieldInt(getContext(),prefIds.ALARM_TIME_MINUTE);
+            int hour = hourT == 0 ? 8 :hourT;
+            int minute = minuteT ==0 ? 30 : minuteT;
 //            String gmail = PrefUtil.getPrefField(getContext(),prefIds.LOGED_IN_ACOUNT);
 //            if(!gmail.equals(PrefUtil.Default_Value)){
 //                syncSwitch.setSummary(gmail);
@@ -209,6 +212,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
         }
+
         void setInitialValues(){
             String download_Pending = PrefUtil.getPrefField(getContext(),prefIds.DOWNLOAD_PENDING);
             if(!download_Pending.equals(PrefUtil.Default_Value)){
@@ -222,6 +226,10 @@ public class SettingsActivity extends AppCompatActivity {
             }
             else {
                 syncSwitch.setChecked(false);
+            }
+            String ischange = PrefUtil.getPrefField(getContext(),prefIds.Daily_update_Check);
+            if(ischange.equals(PrefUtil.Default_Value)){
+               update.setEnabled(false);
             }
             update.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -238,6 +246,51 @@ public class SettingsActivity extends AppCompatActivity {
                     return false;
                 }
             });
+            int dayT = PrefUtil.getPrefFieldInt(getContext(),prefIds.ALARM_DAY);
+            int day = dayT == 0 ? 10 : dayT;
+            DaysPref.setTitle(String.valueOf(day));
+            DaysPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    NumberPicker numberPicker = new  NumberPicker(getContext());
+                    numberPicker.setMinValue(7);
+                    numberPicker.setMaxValue(15);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+                            .setTitle("Choose Day to be notified")
+                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Log.e("jaydip day value",numberPicker.getValue()+"");
+                                    PrefUtil.saveToPrivateInt(getContext(),prefIds.ALARM_DAY,numberPicker.getValue());
+                                    DaysPref.setTitle(numberPicker.getValue()+"");
+                                }
+                            })
+                            .setNegativeButton("cancle", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                    builder.setView(numberPicker);
+                    builder.show();
+
+                    return false;
+                }
+            });
+            dailyUpdate.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if((boolean) newValue){
+                        Utils.setDailyUpdate(getContext());
+                    }
+                    else {
+                        Utils.desableDailUpdate(getContext());
+                    }
+
+                    return true;
+                }
+            });
+
 
 
         }
@@ -310,9 +363,11 @@ public class SettingsActivity extends AppCompatActivity {
                @Override
                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                    timePref.setTitle(hourOfDay+":"+minute);
-                   editor.putInt(key_time_hour,hourOfDay);
-                   editor.putInt(key_time_Minute,minute);
-                   editor.commit();
+                   PrefUtil.saveToPrivateInt(getContext(),prefIds.ALARM_TIME_HOUR,hourOfDay);
+//                   editor.putInt(key_time_hour,hourOfDay);
+//                   editor.putInt(key_time_Minute,minute);
+//                   editor.commit();
+                   PrefUtil.saveToPrivateInt(getContext(),prefIds.ALARM_TIME_MINUTE,minute);
                    Utils.cancelAlarm(getContext());
                    Utils.setAlarm(getContext());
 

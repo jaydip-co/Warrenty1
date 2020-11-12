@@ -43,202 +43,7 @@
 
     </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <TableLayout
-        android:id="@+id/tableLayout"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp">
-        <View android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#009688"
-            android:layout_marginRight="10dp"/>
-        <TableRow >
-            <TextView
 
-                android:textSize="20dp"
-                android:text="Name"
-                android:gravity="start"
-                android:layout_column="1"
-
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"
-                android:padding="4dp"/>
-            <TextView android:textSize="20dp"
-                android:gravity="center"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:padding="4dp"
-                android:text="Null"/>
-        </TableRow>
-        <View android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#009688"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
-        <TableRow >
-            <TextView
-                android:layout_column="1"
-                android:layout_weight="1"
-                android:textSize="20dp"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Category"
-                android:padding="4dp"/>
-            <TextView
-                android:layout_weight="1"
-                android:textSize="20dp"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Null"
-                android:padding="4dp"/>
-        </TableRow>
-        <View android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#009688"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
-        <TableRow >
-
-            <TextView
-                android:layout_column="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="4dp"
-                android:text="purchaseDate"
-                android:textSize="20dp" />
-
-            <TextView
-                android:layout_weight="1"
-                android:textSize="20dp"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Null"
-                android:padding="4dp"/>
-        </TableRow>
-        <View android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#009688"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
-        <TableRow >
-            <TextView
-                android:layout_column="1"
-                android:layout_weight="1"
-                android:textSize="20dp"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Expire Date"
-                android:padding="4dp"/>
-            <TextView
-                android:layout_weight="1"
-                android:textSize="20dp"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Null"
-                android:padding="4dp"/>
-        </TableRow>
-        <View android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#009688"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
-        <TableRow >
-            <TextView
-                android:layout_column="1"
-                android:layout_weight="1"
-                android:textSize="20dp"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Duration in Month"
-                android:padding="4dp"/>
-            <TextView
-                android:layout_weight="1"
-                android:textSize="20dp"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Null"
-                android:padding="4dp"/>
-        </TableRow>
-        <View android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#009688"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
-        <TableRow >
-            <TextView
-                android:layout_column="1"
-                android:layout_weight="1"
-                android:textSize="20dp"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="details"
-                android:padding="4dp"/>
-            <TextView
-                android:layout_weight="1"
-                android:textSize="20dp"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Null"
-                android:padding="4dp"/>
-        </TableRow>
-        <View android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#009688"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
-
-    </TableLayout>
-        <View
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="1dp"
-            android:layout_height="215dp"
-            android:background="#009688"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="6dp"/>
-        <View
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="1dp"
-            android:layout_height="215dp"
-            android:background="#009688"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="20dp" />
-        <View
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="1dp"
-            android:layout_height="215dp"
-            android:background="#009688"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="10dp"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/Image_card"
@@ -260,19 +65,6 @@
             android:src="@drawable/default_image"/>
     </androidx.cardview.widget.CardView>
 
-    <ImageView
-        android:visibility="gone"
-        android:background = "@drawable/category_border"
-        android:layout_margin="10dp"
-        android:padding="5dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/default_image"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Image_card"
-        android:id="@+id/item_Image"
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
 
     <TextView
         android:layout_marginTop="10dp"
@@ -283,7 +75,7 @@
         android:textSize="30dp"
         android:layout_marginLeft="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_Image"
+        app:layout_constraintTop_toBottomOf="@+id/Image_card"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -557,61 +349,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailLayout"
-        app:layout_constraintEnd_toEndOf="parent">
-        <androidx.cardview.widget.CardView
-            android:id="@+id/ItemCard"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="@dimen/image_view_widh"
-            android:layout_height="@dimen/image_view_height"
-            android:visibility="gone"
-            android:layout_marginRight="10dp"
-            app:cardCornerRadius="10dp"
-            >
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/category_border">
-                <ImageView
-                    android:padding="5dp"
-                    android:id="@+id/IImage"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:src="@drawable/pdf"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            app:layout_constraintStart_toEndOf="@+id/ItemCard"
-            android:id="@+id/BillCard"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="@dimen/image_view_widh"
-            android:layout_height="@dimen/image_view_height"
-            android:visibility="gone"
-            android:layout_marginLeft="20dp"
-            app:cardCornerRadius="10dp"
-            >
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/category_border"/>
-            <ImageView
-                android:padding="5dp"
-                android:id="@+id/IBill"
-                android:src="@drawable/pdf"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </androidx.cardview.widget.CardView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

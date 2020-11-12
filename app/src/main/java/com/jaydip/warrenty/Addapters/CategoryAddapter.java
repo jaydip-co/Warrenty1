@@ -82,7 +82,7 @@ public class CategoryAddapter extends RecyclerView.Adapter<CategoryAddapter.cate
 
                     Log.e("jaydip", "mode");
                     AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                            .setTitle("Are you Sure?")
+                            .setTitle("Do you want to delete Category "+single.getCategoryName()+" ?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

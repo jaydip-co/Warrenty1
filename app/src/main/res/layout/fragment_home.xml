@@ -36,44 +36,7 @@
         android:text="Enter pin or use fingerprint to unlock app"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    <LinearLayout
-        android:id="@+id/linearlayout"
-        app:layout_constraintTop_toBottomOf="@+id/textHome"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
-        <EditText
-            android:visibility="gone"
-            android:inputType="numberPassword"
-            android:id="@+id/LoginPass"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="140dp"
-            android:background="@drawable/round_input_focus"
-            android:drawableLeft="@drawable/lock"
-            android:drawablePadding="10dp"
-            android:hint="Enter Password"
-
-            android:lines="1"
-            android:maxLength="10"
-
-            android:padding="8dp"
-            android:paddingLeft="25dp"
-            android:textColor="#000"
-            android:textColorHint="@color/backgroud" />
-
-        <TextView
-            android:id="@+id/invalid"
-            android:text="Doesnt't match"
-            android:textColor="@color/error"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
-    </LinearLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/pin_layout"
         app:layout_constraintStart_toStartOf="parent"
@@ -140,6 +103,8 @@
         android:background="@drawable/round_button"
         android:elevation="1dp"
         android:text="go"
+        android:textSize="20dp"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pin_layout" />
     <TextView

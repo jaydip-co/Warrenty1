@@ -127,7 +127,7 @@ public class ExpiredItemAddapter extends RecyclerView.Adapter<ExpiredItemAddapte
 
     class ExpiredItemHolder extends RecyclerView.ViewHolder{
         TextView t,expireDate,purchasedate;
-        ImageView itemImage,delete,edit,LeftDays,showBill;
+        ImageView itemImage,delete,edit,showBill;
         public ExpiredItemHolder(@NonNull View itemView) {
             super(itemView);
             t = itemView.findViewById(R.id.ItemNAme);
@@ -136,7 +136,6 @@ public class ExpiredItemAddapter extends RecyclerView.Adapter<ExpiredItemAddapte
             delete = itemView.findViewById(R.id.delete);
             edit = itemView.findViewById(R.id.edit);
             purchasedate = itemView.findViewById(R.id.purchasedate);
-            LeftDays = itemView.findViewById(R.id.leftDays);
             showBill = itemView.findViewById(R.id.ViewBill);
         }
     }

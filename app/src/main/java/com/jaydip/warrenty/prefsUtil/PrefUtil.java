@@ -10,10 +10,18 @@ import com.google.gson.internal.$Gson$Preconditions;
 public class PrefUtil {
     private static final String preference_name = "preference_Name";
     public static final String Default_Value = "Default_Value";
+    public static final int Default_Int_value = 0;
    public static void saveToPrivate(Context activity,String id,String value){
         SharedPreferences sharedPreferences = activity.getSharedPreferences(preference_name, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(id,value);
+        editor.commit();
+//       Log.e("jaydip added",value);
+    }
+    public static void saveToPrivateInt(Context activity,String id,int value){
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(preference_name, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(id,value);
         editor.commit();
 //       Log.e("jaydip added",value);
     }
@@ -23,6 +31,13 @@ public class PrefUtil {
        String value = sharedPreferences.getString(string,Default_Value);
        Log.e("jaydip in pref Util",value);
        return value;
+    }
+    public static int getPrefFieldInt(Context activity,String string){
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(preference_name, Context.MODE_PRIVATE);
+
+        int value = sharedPreferences.getInt(string,Default_Int_value);
+        Log.e("jaydip in pref Util",value+"");
+        return value;
     }
     ////////////////////////////////
     public static void setFinalPin(Context context){

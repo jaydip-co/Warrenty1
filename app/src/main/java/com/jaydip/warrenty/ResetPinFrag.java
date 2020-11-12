@@ -23,10 +23,11 @@ import com.jaydip.warrenty.prefsUtil.prefIds;
 
 
 public class ResetPinFrag extends Fragment {
-    ImageView e1,e2,e3,e4;
-    EditText pincode;
-    Drawable pin_entered,pin_back,pinback_focus,pinback_entered_focus;
+    ImageView e1,e2,e3,e4,e1Again,e2Again,e3Again,e4Again;
+    EditText pincode,pincodeAgain;
+    Drawable pin_entered,pin_back,pinback_focus,pinback_entered_focus,pin_error;
     Button ResetPin;
+    boolean isWrongPin = false;
 
 
 
@@ -54,12 +55,18 @@ public class ResetPinFrag extends Fragment {
         e2 = v.findViewById(R.id.pin2);
         e3 = v.findViewById(R.id.pin3);
         e4 = v.findViewById(R.id.pin4);
+        e1Again = v.findViewById(R.id.pin1again);
+        e2Again = v.findViewById(R.id.pin2again);
+        e3Again = v.findViewById(R.id.pin3again);
+        e4Again = v.findViewById(R.id.pin4again);
         pincode = v.findViewById(R.id.pincode_edit);
+        pincodeAgain = v.findViewById(R.id.pincode_edit_again);
 
         pin_entered = getActivity().getDrawable(R.drawable.pincode_entered_back);
         pin_back = getActivity().getDrawable(R.drawable.pincode_back);
         pinback_focus = getActivity().getDrawable(R.drawable.pinback_focus);
         pinback_entered_focus = getActivity().getDrawable(R.drawable.pinback_entered_focus);
+        pin_error = getActivity().getDrawable(R.drawable.pin_error);
         ResetPin = v.findViewById(R.id.ResetPin);
         setListeners();
         return v;
@@ -93,11 +100,109 @@ public class ResetPinFrag extends Fragment {
         ResetPin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PrefUtil.saveToPrivate(getContext(), prefIds.FINAL_PIN,pincode.getText().toString());
-                Intent i = new Intent(getActivity(),HomeActivity.class);
-                getActivity().startActivity(i);
+                if(pincode.getText().toString().equals(pincodeAgain.getText().toString())) {
+                    PrefUtil.saveToPrivate(getContext(), prefIds.FINAL_PIN, pincode.getText().toString());
+                    Intent i = new Intent(getActivity(), HomeActivity.class);
+                    getActivity().startActivity(i);
+                }
+                else {
+                    setNotSamePin();
+                }
             }
         });
+        pincodeAgain.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                createPinAgain();
+            }
+        });
+        TextWatcher watcherAgain = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                createPinAgain();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+        pincodeAgain.addTextChangedListener(watcherAgain);
+    }
+    void setNotSamePin(){
+        isWrongPin = true;
+        e1Again.setImageDrawable(pin_error);
+        e2Again.setImageDrawable(pin_error);
+        e3Again.setImageDrawable(pin_error);
+        e4Again.setImageDrawable(pin_error);
+        pincodeAgain.setText("");
+
+    }
+    void createPinAgain(){
+        Log.e("jaydip pin again ", pincodeAgain.getText().toString());
+        int len = pincodeAgain.getText().toString().length();
+        if(len == 4 && pincode.getText().length() == 4){
+            ResetPin.setEnabled(true);
+        }
+        else {
+            ResetPin.setEnabled(false);
+        }
+        switch (len){
+            case 0:
+                if(isWrongPin){
+                    e1Again.setImageDrawable(pin_error);
+                    e2Again.setImageDrawable(pin_error);
+                    e3Again.setImageDrawable(pin_error);
+                    e4Again.setImageDrawable(pin_error);
+                    break;
+                }
+                e1Again.setImageDrawable(pinback_focus);
+                e2Again.setImageDrawable(pin_back);
+                e3Again.setImageDrawable(pin_back);
+                e4Again.setImageDrawable(pin_back);
+                break;
+            case 1:
+                isWrongPin = false;
+//                e1.setText("");
+//                e1.setBackground(getActivity().getDrawable(R.drawable.pincode_entered_back));
+//                e2.requestFocus();
+                e1Again.setImageDrawable(pin_entered);
+                e2Again.setImageDrawable(pinback_focus);
+                e3Again.setImageDrawable(pin_back);
+                e4Again.setImageDrawable(pin_back);
+                break;
+            case 2:
+
+//                e2.setBackground(getActivity().getDrawable(R.drawable.pincode_entered_back));
+//                e3.requestFocus();
+//                e2.setText("");
+                e1Again.setImageDrawable(pin_entered);
+                e2Again.setImageDrawable(pin_entered);
+                e3Again.setImageDrawable(pinback_focus);
+                e4Again.setImageDrawable(pin_back);
+                break;
+            case 3:
+//                e3.setText("");
+//                e3.setBackground(getActivity().getDrawable(R.drawable.pincode_entered_back));
+//                e4.requestFocus();
+                e1Again.setImageDrawable(pin_entered);
+                e2Again.setImageDrawable(pin_entered);
+                e3Again.setImageDrawable(pin_entered);
+                e4Again.setImageDrawable(pinback_focus);
+                break;
+            case 4:
+                e1Again.setImageDrawable(pin_entered);
+                e2Again.setImageDrawable(pin_entered);
+                e3Again.setImageDrawable(pin_entered);
+                e4Again.setImageDrawable(pinback_entered_focus);
+                break;
+
+        }
     }
     void createPin(){
 //        Log.e("jaydip",s);
@@ -106,7 +211,7 @@ public class ResetPinFrag extends Fragment {
 
 
         int len = pincode.getText().toString().length();
-        if(len == 4){
+        if(len == 4 && pincodeAgain.getText().length() == 4){
             ResetPin.setEnabled(true);
         }
         else {

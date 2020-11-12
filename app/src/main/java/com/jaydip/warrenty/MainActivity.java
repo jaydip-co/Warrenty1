@@ -19,8 +19,6 @@ import com.shockwave.pdfium.PdfiumCore;
 
 public class MainActivity extends FragmentActivity {
     FrameLayout container;
-    EditText loginPass;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +30,6 @@ public class MainActivity extends FragmentActivity {
         SetPassFragment pass = new SetPassFragment();
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        loginPass = findViewById(R.id.LoginPass);
         String pasString = PrefUtil.getPrefField(getApplication(), prefIds.FINAL_PIN);
        HomeFragment home= new HomeFragment(pasString);
        Log.e("password",pasString);
@@ -48,10 +45,5 @@ public class MainActivity extends FragmentActivity {
             transaction.add(R.id.Container,home);
             transaction.commit();
         }
-
-
-
-        }
-
-
+    }
 }

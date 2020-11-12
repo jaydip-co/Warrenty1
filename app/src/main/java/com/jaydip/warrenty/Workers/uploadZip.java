@@ -75,6 +75,7 @@ public class uploadZip extends Worker {
                                 mBuilder.setProgress(100,100,false)
                                 .setContentTitle("Completed");
                                 manager.notify(110,mBuilder.build());
+                                PrefUtil.saveToPrivate(getApplicationContext(),prefIds.Daily_update_Check,PrefUtil.Default_Value);
 
                             }
                         });

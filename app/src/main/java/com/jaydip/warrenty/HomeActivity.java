@@ -70,7 +70,6 @@ public class HomeActivity extends AppCompatActivity implements DeleteCategory {
     boolean isopen;
     List<String> categories;
     ImageView background,setting;
-    int STORAGE_REQUEST_CODE = 112;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override

@@ -34,6 +34,8 @@ import com.hbisoft.pickit.PickiTCallbacks;
 import com.jaydip.warrenty.Models.ItemModel;
 import com.jaydip.warrenty.ViewModels.CategoryViewModel;
 import com.jaydip.warrenty.ViewModels.ItemViewModel;
+import com.jaydip.warrenty.prefsUtil.PrefUtil;
+import com.jaydip.warrenty.prefsUtil.prefIds;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -56,7 +58,7 @@ import androidx.lifecycle.Observer;
 
 public class EditItem extends AppCompatActivity implements PickiTCallbacks {
 
-    EditText Iname,Imonth,Idetail,labelTest;
+    EditText Iname,Imonth,Idetail;
     TextView Idate,Isave,Inamelabel,Idatelebel,Imonthlabel,Idetaillabel,pdfName;
     Button AttachImage,AttachBill,AttachPdf;
     Spinner Icategory;
@@ -66,7 +68,7 @@ public class EditItem extends AppCompatActivity implements PickiTCallbacks {
     ItemViewModel itemViewModel;
     String currentCategory,lastDate,lastCategory,currentImageUri,currentBillUri,currentpdfpath;
     Toolbar toolbar;
-    byte[] ItemImage,BillImage;
+    byte[] ItemImage;
     Bitmap ItemBitmap,BillBitmap;
     private static int REQUEST_CODE_Image =100;
     private static int REQUEST_CODE_Bill =150;
@@ -451,6 +453,7 @@ public class EditItem extends AppCompatActivity implements PickiTCallbacks {
 //                Utils.copyPdf(getApplicationContext(),currentpdfpath,toStore);
 //                item.setPdfName(pdfName.getText().toString());
 //            }
+            PrefUtil.saveToPrivate(getApplicationContext(), prefIds.Daily_update_Check,"yes");
             itemViewModel.update(item);
             if (!currentCategory.equals(lastCategory)) {
                 categoryViewModel.decrementItem(lastCategory);

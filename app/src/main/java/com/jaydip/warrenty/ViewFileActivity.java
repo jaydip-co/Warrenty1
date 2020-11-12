@@ -24,11 +24,11 @@ import java.util.concurrent.TimeUnit;
 
 public class ViewFileActivity extends AppCompatActivity {
     ItemModel item;
-    ImageView editButton,RecieptButton,backButton,IImage,IBill,ItemImage;
+    ImageView editButton,RecieptButton,backButton,ItemImage;
     TextView Iname,Icategory,purchasedate,expireDate,expireDateLabel,IMonth,IDetail,detailseperator,detailLable,lastUpdateDate,DaysLeft,daysLeftLabel,DaysLeftSeperator;
-    CardView ItemCard,BillCard;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +45,6 @@ public class ViewFileActivity extends AppCompatActivity {
         IDetail = findViewById(R.id.IDetail);
         detailLable = findViewById(R.id.detailLable);
         detailseperator = findViewById(R.id.detailseperator);
-        IImage = findViewById(R.id.IImage);
-        IBill = findViewById(R.id.IBill);
-        ItemCard = findViewById(R.id.ItemCard);
-        BillCard = findViewById(R.id.BillCard);
         ItemImage = findViewById(R.id.Item_image);
         RecieptButton = findViewById(R.id.recieptButton);
         lastUpdateDate = findViewById(R.id.lastUpdateDate);
@@ -106,7 +102,6 @@ public class ViewFileActivity extends AppCompatActivity {
 //            ItemCard.setVisibility(View.VISIBLE);
 
             Bitmap ImageBit = BitmapFactory.decodeByteArray(item.getItemImage(),0,item.getItemImage().length);
-            IImage.setImageBitmap(ImageBit);
             ItemImage.setImageBitmap(ImageBit);
             ItemImage.setOnClickListener(new View.OnClickListener() {
                 @Override

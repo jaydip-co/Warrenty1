@@ -131,7 +131,7 @@
                     android:popupElevation="2dp"
                     android:popupTheme="@style/Theme.AppCompat.DayNight.Dialog.Alert" />
 
-                <ImageView
+                 <ImageView
                     android:layout_gravity="center|end"
                     android:src="@drawable/drop_down"
                     android:layout_marginTop="4dp"

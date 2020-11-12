@@ -42,12 +42,15 @@ public class itemAddapter extends RecyclerView.Adapter<itemAddapter.itemHolder> 
     DeleteItem listener;
     Context context;
     ActivityForResult listener2;
+    Drawable defaultImage;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public itemAddapter(Context context){
         this.context = context;
         inflater = LayoutInflater.from(context);
         list = new ArrayList<>();
         this.listener = (DeleteItem) context;
         this.listener2 = (ActivityForResult) context;
+        defaultImage = context.getDrawable(R.drawable.default_image);
     }
     @NonNull
     @Override
@@ -76,6 +79,15 @@ public class itemAddapter extends RecyclerView.Adapter<itemAddapter.itemHolder> 
                 });
 
             }
+            else {
+                holder.itemImage.setImageDrawable(defaultImage);
+                holder.itemImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+            }
                 holder.expireDate.setText(single.getExpireDate());
                 holder.purchasedate.setText(single.getPurchaseDate());
 
@@ -88,41 +100,9 @@ public class itemAddapter extends RecyclerView.Adapter<itemAddapter.itemHolder> 
                 Log.e("jaydip","days left"+daysLeft);
                 holder.daysLeft.setText(String.valueOf(daysLeft));
 
-                Date purchase = format.parse(single.getPurchaseDate());
-                long totaldayInmilli = expireDate.getTime() - purchase.getTime();
-                int totalday = (int)TimeUnit.MILLISECONDS.toDays(Math.abs(totaldayInmilli));
-                Log.e("total days ",totalday+"");
-                double fractionratio = (double) daysLeft/totalday;
-                Log.e("jaydip",fractionratio+"");
 
-                if(fractionratio > 0.9){
-                    Drawable d = context.getDrawable(R.drawable.left_days_full);
-                    holder.LeftDays.setImageDrawable(d);
-                    int width = 148;
-                    Log.e("jaydip","widh"+width);
-                    double w = width * fractionratio;
-                    Log.e("jaydip","widh+"+w);
-                    width = ((int) w);
-                    Log.e("jaydip","widh++"+width);
 
-                    float den = Resources.getSystem().getDisplayMetrics().density;
-                    holder.LeftDays.getLayoutParams().width = (int) (width * den);
-                    holder.LeftDays.requestLayout();
 
-                }
-                else{
-                    Drawable d = context.getDrawable(R.drawable.left_days);
-                    holder.LeftDays.setImageDrawable(d);
-                    int width = 148;
-                    Log.e("jaydip","widh"+width);
-                    double w = width * fractionratio;
-                    Log.e("jaydip","widh+"+w);
-                    width = ((int) w);
-                    Log.e("jaydip","widh++"+width);
-                    holder.LeftDays.getLayoutParams().width = width;
-                    holder.LeftDays.requestLayout();
-
-                }
                 holder.edit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -175,7 +155,7 @@ public class itemAddapter extends RecyclerView.Adapter<itemAddapter.itemHolder> 
 
     class itemHolder extends RecyclerView.ViewHolder{
         TextView t,expireDate,daysLeft,purchasedate;
-        ImageView itemImage,delete,edit,LeftDays,showBill;
+        ImageView itemImage,delete,edit,showBill;
         public itemHolder(@NonNull View itemView) {
             super(itemView);
             t = itemView.findViewById(R.id.ItemNAme);
@@ -185,7 +165,6 @@ public class itemAddapter extends RecyclerView.Adapter<itemAddapter.itemHolder> 
             daysLeft = itemView.findViewById(R.id.daysLeft);
             edit = itemView.findViewById(R.id.edit);
             purchasedate = itemView.findViewById(R.id.purchasedate);
-            LeftDays = itemView.findViewById(R.id.leftDays);
             showBill = itemView.findViewById(R.id.ViewBill);
         }
     }

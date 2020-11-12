@@ -137,7 +137,7 @@ public class QuestionsFrag extends Fragment {
        Continue.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               PrefUtil.saveToPrivate(getActivity(), prefIds.RECOVERY_QUESTION,Answer.getText().toString());
+               PrefUtil.saveToPrivate(getActivity(), prefIds.RECOVERY_ANSWER,Answer.getText().toString());
                PrefUtil.saveToPrivate(getActivity(),prefIds.RECOVERY_QUESTION,RecoveryQuestion);
                PrefUtil.saveToPrivate(getActivity(),prefIds.USER_NAME,Name.getText().toString());
               BackUpFragment fragment = new BackUpFragment();

@@ -84,21 +84,10 @@
       android:layout_marginBottom="200dp"
       android:text="Check For Update"
       android:layout_width="wrap_content"
-      android:background="@drawable/round_button"
+      android:background="@drawable/backup_button"
       android:layout_height="wrap_content" />
 
-  <Button
-      android:visibility="invisible"
-      android:id="@+id/changeACoount"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="12dp"
-      android:background="@drawable/round_button"
-      android:padding="5dp"
-      android:text="Try other account"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/check_button" />
+
 <TextView
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
